@@ -253,3 +253,23 @@
     </script>
 </body>
 </html>
+
+
+<!-- Meta tags jo In-App Browser ko Force Edge-to-Edge frame me lock karte hain -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<style>
+  /* Screen ko viewport boundaries par fix karne ke liye */
+  html, body {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh; /* Dynamic Viewport Height for Modern WebViews */
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+</style>
