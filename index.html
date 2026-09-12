@@ -2,32 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- Combined Android & iOS Viewport Engine (Notch + Fullscreen Lock) -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <!-- iOS Native App UI Configs -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    
     <title>Web3 Fullscreen Universal App</title>
-    
-    <!-- Ethers.js Web3 Engine Engine for Event Handling -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
-    
+
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
-        /* Web3 Dynamic Viewport Engine (Safari & iOS Lock Fix) */
+        /* Combined Android (dvh) & iOS (Safe-Area) Fix */
         html, body {
             width: 100vw;
             height: 100vh;
-            height: 100dvh; /* Dynamic Viewport Height for Modern Mobile Browsers */
+            height: 100dvh;
             overflow: hidden;
             background-color: #040814;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             color: #ffffff;
+            
+            /* iOS Notch and Bottom Indicator Handling */
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
         }
 
-        /* Fallback Pseudo Fullscreen Container */
         #app-root {
             position: fixed;
             top: 0;
@@ -80,7 +94,6 @@
             margin-bottom: 2rem;
         }
 
-        /* Web3 Neon Glow Button */
         .web3-btn {
             width: 100%;
             padding: 16px 24px;
@@ -100,8 +113,7 @@
             box-shadow: 0 0 10px rgba(0, 242, 254, 0.6);
         }
 
-        /* Native Fullscreen CSS Fallback override */
-        :fullscreen, :-webkit-full-screen, :-moz-full-screen, :-ms-fullscreen {
+        :fullscreen, :-webkit-full-screen, :-moz-full-screen {
             width: 100vw !important;
             height: 100vh !important;
         }
@@ -113,67 +125,65 @@
         <canvas id="bg-canvas"></canvas>
         
         <div class="web3-card">
-            <div class="web3-title">Web3 Fullscreen</div>
-            <p class="web3-subtitle" id="status-text">Kahin bhi click/tap karein fullscreen trigger karne ke liye.</p>
+            <div class="web3-title">Universal Web3 Engine</div>
+            <p class="web3-subtitle" id="status-text">Detecting Platform Specs...</p>
             <button class="web3-btn" id="connect-btn">ACTIVATE FULLSCREEN</button>
         </div>
     </div>
 
     <script>
-        // --- 1. Web3 Multi-Fallback Fullscreen Engine ---
-        class Web3FullscreenEngine {
+        // --- Universal Android & iOS Platform Detector Engine ---
+        class UniversalFullscreenEngine {
             constructor(rootElement) {
                 this.root = rootElement;
-                this.isForceCSSFallback = false;
+                this.isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                this.isAndroid = /Android/.test(navigator.userAgent);
             }
 
             async execute() {
                 const elem = this.root;
 
-                // Priority 1: Standard Modern APIs
+                // 1. Android & Modern Desktop APIs
                 try {
                     if (elem.requestFullscreen) {
                         await elem.requestFullscreen();
                         return;
-                    } else if (elem.webkitRequestFullscreen) { /* iOS / Safari */
+                    } else if (elem.webkitRequestFullscreen) {
                         await elem.webkitRequestFullscreen();
                         return;
-                    } else if (elem.webkitEnterFullscreen) { /* iPhone Canvas/Video Fallback */
-                        await elem.webkitEnterFullscreen();
-                        return;
-                    } else if (elem.mozRequestFullScreen) { /* Firefox */
+                    } else if (elem.mozRequestFullScreen) {
                         await elem.mozRequestFullScreen();
-                        return;
-                    } else if (elem.msRequestFullscreen) { /* IE / Edge */
-                        await elem.msRequestFullscreen();
                         return;
                     }
                 } catch (err) {
-                    console.warn("Native API Blocked by Browser. Activating Web3 CSS Viewport Fallback.");
+                    console.warn("Native OS Browser API restricted. Activating Viewport Engine.");
                 }
 
-                // Priority 2: Web3 CSS Fallback (Jab browser Security API allow na kare)
-                this.activateCSSFallback();
+                // 2. iOS Specific Fallback Handling
+                if (this.isIOS) {
+                    this.applyIOSViewportHack();
+                } else {
+                    this.applyAndroidViewportHack();
+                }
             }
 
-            activateCSSFallback() {
-                this.isForceCSSFallback = true;
+            applyIOSViewportHack() {
                 this.root.style.position = 'fixed';
-                this.root.style.top = '0';
-                this.root.style.left = '0';
-                this.root.style.width = '100vw';
+                this.root.style.height = '-webkit-fill-available';
+                window.scrollTo(0, 0);
+                document.getElementById('status-text').innerText = "iOS Edge-to-Edge Viewport Active";
+            }
+
+            applyAndroidViewportHack() {
+                this.root.style.position = 'fixed';
                 this.root.style.height = '100dvh';
-                
-                // Hide Address bar on mobile devices automatically via scroll hack
                 window.scrollTo(0, 1);
-                
-                document.getElementById('status-text').innerText = "Web3 App Viewport Mode Active!";
+                document.getElementById('status-text').innerText = "Android Immersive Mode Active";
             }
         }
 
-        const engine = new Web3FullscreenEngine(document.getElementById('app-root'));
+        const engine = new UniversalFullscreenEngine(document.getElementById('app-root'));
 
-        // --- 2. Universal Trigger Engine (Click, Touch, Web3 Button) ---
         function triggerApp() {
             engine.execute();
         }
@@ -183,7 +193,6 @@
             triggerApp();
         });
 
-        // Global Event Binding for instant tap anywhere
         ['click', 'touchstart', 'pointerdown'].forEach(eventType => {
             document.addEventListener(eventType, function initTouch() {
                 triggerApp();
@@ -191,7 +200,7 @@
             }, { once: true });
         });
 
-        // --- 3. Dynamic Web3 Particle Animation Canvas ---
+        // --- Animated Web3 Background Engine ---
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
 
