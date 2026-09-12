@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full Screen Mode</title>
+    <title>Ultimate Universal Fullscreen Experience</title>
     <style>
         * {
             margin: 0;
@@ -15,121 +15,238 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+            background: #090a0f;
             color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
-            text-align: center;
-            user-select: none;
         }
 
+        /* Continuous Background Canvas Animation */
+        #bg-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Glassmorphism UI Box */
         .container {
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            position: relative;
+            z-index: 2;
+            padding: 3rem 2rem;
+            background: rgba(18, 18, 28, 0.45);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6),
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+            text-align: center;
             max-width: 90%;
-            width: 400px;
+            width: 440px;
         }
 
         h1 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            margin-bottom: 1.5rem;
-        }
-
-        .btn {
-            background: #00c6ff;
-            background: linear-gradient(to right, #0072ff, #00c6ff);
-            color: white;
-            border: none;
-            padding: 12px 28px;
             font-size: 1rem;
-            font-weight: bold;
-            border-radius: 30px;
+            color: #a0a5c0;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        /* Next-Gen Cyber Neon Glowing Button */
+        .btn-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .cyber-btn {
+            position: relative;
+            background: linear-gradient(90deg, #ff007f, #7928ca, #00f2fe);
+            background-size: 200% auto;
+            color: #fff;
+            border: none;
+            padding: 16px 40px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-radius: 50px;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            outline: none;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 20px rgba(121, 40, 202, 0.5);
+            animation: gradientMove 3s infinite linear;
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 198, 255, 0.4);
+        .cyber-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 35px rgba(0, 242, 254, 0.8);
         }
 
-        .btn:active {
-            transform: translateY(0);
+        .cyber-btn:active {
+            transform: scale(0.98);
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Background Animation Layer -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Main Dynamic UI Container -->
     <div class="container">
-        <h1 id="status-title">Full Screen App</h1>
-        <p id="status-text">Kahin bhi click karo fullscreen karne ke liye.</p>
-        <button class="btn" onclick="toggleFullScreen()">Full Screen Toggle</button>
+        <h1 id="title">Universal Mode</h1>
+        <p id="desc">Screen par kahin bhi tap karein fullscreen ke liye.</p>
+        <div class="btn-wrapper">
+            <button class="cyber-btn" onclick="toggleUniversalFullscreen()">Toggle Fullscreen</button>
+        </div>
     </div>
 
     <script>
-        function openFullScreen() {
-            let elem = document.documentElement;
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen();
-            } else if (elem.webkitRequestFullscreen) { /* Safari */
-                elem.webkitRequestFullscreen();
-            } else if (elem.msRequestFullscreen) { /* IE11 */
-                elem.msRequestFullscreen();
+        // --- 1. Canvas Dynamic Particle Background Engine ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = (Math.random() - 0.5) * 1.5;
+                this.speedY = (Math.random() - 0.5) * 1.5;
+                this.color = `hsl(${Math.random() * 60 + 220}, 100%, 65%)`;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
             }
         }
 
-        function closeFullScreen() {
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 80; i++) {
+                particles.push(new Particle());
+            }
+        }
+        initParticles();
+
+        function animateBackground() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateBackground);
+        }
+        animateBackground();
+
+        // --- 2. Universal Cross-Browser Fullscreen Engine ---
+        function requestNativeFullscreen(element) {
+            // Safari / Chrome / Firefox / Opera / Edge / iOS Engine Fallbacks
+            if (element.requestFullscreen) {
+                return element.requestFullscreen();
+            } else if (element.webkitRequestFullscreen) { /* iOS Safari & Legacy WebKit */
+                return element.webkitRequestFullscreen();
+            } else if (element.mozRequestFullScreen) { /* Firefox */
+                return element.mozRequestFullScreen();
+            } else if (element.msRequestFullscreen) { /* IE11 / Edge */
+                return element.msRequestFullscreen();
+            } else if (element.webkitEnterFullscreen) { /* iPhone Video Fullscreen mode fallback */
+                return element.webkitEnterFullscreen();
+            }
+            return Promise.reject("Fullscreen API not supported");
+        }
+
+        function exitNativeFullscreen() {
             if (document.exitFullscreen) {
                 document.exitFullscreen();
             } else if (document.webkitExitFullscreen) {
                 document.webkitExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
             } else if (document.msExitFullscreen) {
                 document.msExitFullscreen();
             }
         }
 
-        function toggleFullScreen() {
-            if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
-                openFullScreen();
+        function isFullscreenActive() {
+            return !!(document.fullscreenElement || 
+                      document.webkitFullscreenElement || 
+                      document.mozFullScreenElement || 
+                      document.msFullscreenElement);
+        }
+
+        function toggleUniversalFullscreen() {
+            if (!isFullscreenActive()) {
+                requestNativeFullscreen(document.documentElement).catch(err => console.log("User Interaction Required"));
             } else {
-                closeFullScreen();
+                exitNativeFullscreen();
             }
         }
 
-        // Screen par kahin bhi pehli click karte hi full screen ho jayega
-        document.addEventListener('click', function autoFullScreen() {
-            if (!document.fullscreenElement) {
-                openFullScreen();
+        // --- 3. Instant Global First-Touch Event Listener ---
+        const triggerEvents = ['click', 'touchstart', 'keydown'];
+        
+        function autoTriggerFullscreen() {
+            if (!isFullscreenActive()) {
+                requestNativeFullscreen(document.documentElement).catch(() => {});
             }
-        }, { once: true });
+            // First interaction ke baad listener remove ho jayega taaki repeat trigger na ho
+            triggerEvents.forEach(event => document.removeEventListener(event, autoTriggerFullscreen));
+        }
 
-        // Fullscreen state detect karke UI update karna
-        document.addEventListener('fullscreenchange', updateUI);
-        document.addEventListener('webkitfullscreenchange', updateUI);
+        triggerEvents.forEach(event => document.addEventListener(event, autoTriggerFullscreen, { once: true }));
 
-        function updateUI() {
-            const title = document.getElementById('status-title');
-            const text = document.getElementById('status-text');
-            if (document.fullscreenElement) {
-                title.innerText = "Full Screen Active!";
-                text.innerText = "Exit karne ke liye ESC dabayein ya button par click karein.";
+        // UI Text Dynamic Update Engine
+        function updateUIState() {
+            const title = document.getElementById('title');
+            const desc = document.getElementById('desc');
+            if (isFullscreenActive()) {
+                title.innerText = "Fullscreen Active!";
+                desc.innerText = "Exit karne ke liye ESC dabayein ya toggle button use karein.";
             } else {
-                title.innerText = "Full Screen App";
-                text.innerText = "Kahin bhi click karo fullscreen karne ke liye.";
+                title.innerText = "Universal Mode";
+                desc.innerText = "Screen par kahin bhi tap karein fullscreen ke liye.";
             }
         }
+
+        ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(evt => {
+            document.addEventListener(evt, updateUIState);
+        });
     </script>
 </body>
 </html>
