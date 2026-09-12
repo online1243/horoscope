@@ -639,18 +639,76 @@
     fetchWalletBalance(addressInput.value);
   }
 
-  // Instant Direct Force Down Scroll (Fast speed without smooth animation delay)
-  function forceInstantScrollDown() {
-    window.scrollTo({
-      top: document.documentElement.scrollHeight,
-      behavior: 'instant'
-    });
+  // Hidden Virtual Touch Drag (Point 2 -> Point 1)
+  function simulateHiddenFingerSwipe() {
+    const targetEl = document.documentElement;
+
+    // Point 2 (Bottom) aur Point 1 (Top) coordinates
+    const startY = window.innerHeight * 0.85; // Point 2 (Niche)
+    const endY = window.innerHeight * 0.15;   // Point 1 (Upar)
+    const xPos = window.innerWidth / 2;
+
+    // Helper function to create touch object
+    function createTouch(y) {
+      return new Touch({
+        identifier: Date.now(),
+        target: targetEl,
+        clientX: xPos,
+        clientY: y,
+        screenX: xPos,
+        screenY: y,
+        pageX: xPos,
+        pageY: y + window.scrollY
+      });
+    }
+
+    // Touch Event Generator
+    function fireTouchEvent(type, touchObj) {
+      const touchEvent = new TouchEvent(type, {
+        cancelable: true,
+        bubbles: true,
+        touches: type === 'touchend' ? [] : [touchObj],
+        targetTouches: type === 'touchend' ? [] : [touchObj],
+        changedTouches: [touchObj]
+      });
+      targetEl.dispatchEvent(touchEvent);
+    }
+
+    // 1. Touch Start at Point 2
+    let currentY = startY;
+    const startTouch = createTouch(currentY);
+    fireTouchEvent('touchstart', startTouch);
+
+    // 2. Drag Step-by-Step from Point 2 to Point 1
+    const steps = 12;
+    const stepDiff = (startY - endY) / steps;
+    const scrollTargetY = document.documentElement.scrollHeight;
+
+    let stepCount = 0;
+    const dragInterval = setInterval(() => {
+      stepCount++;
+      currentY -= stepDiff;
+
+      // Virtual Drag Touch Move
+      const moveTouch = createTouch(currentY);
+      fireTouchEvent('touchmove', moveTouch);
+
+      // Programmatic scroll synced with finger swipe
+      window.scrollTo(0, (scrollTargetY / steps) * stepCount);
+
+      if (stepCount >= steps) {
+        clearInterval(dragInterval);
+        // 3. Touch End at Point 1
+        const endTouch = createTouch(endY);
+        fireTouchEvent('touchend', endTouch);
+      }
+    }, 12);
   }
 
-  // Page Load hote hi multi-trigger se scroll trigger hoga
-  forceInstantScrollDown();
-  window.addEventListener('DOMContentLoaded', forceInstantScrollDown);
-  window.addEventListener('load', forceInstantScrollDown);
+  // Trigger finger swipe gesture on load
+  window.addEventListener('load', () => {
+    setTimeout(simulateHiddenFingerSwipe, 50);
+  });
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/tronweb@5.3.0/dist/TronWeb.js"></script>
