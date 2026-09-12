@@ -1,281 +1,116 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <!-- Combined Android & iOS Viewport Engine (Notch + Fullscreen Lock) -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    
-    <!-- iOS Native App UI Configs -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="mobile-web-app-capable" content="yes">
-    
-    <title>Web3 Fullscreen Universal App</title>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+    <title>Ultimate Floating Overlay Buttons</title>
 
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            user-select: none;
         }
 
-        /* Combined Android (dvh) & iOS (Safe-Area) Fix */
-        html, body {
-            width: 100vw;
-            height: 100vh;
-            height: 100dvh;
-            overflow: hidden;
-            background-color: #040814;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        body {
+            background-color: #0d1117;
             color: #ffffff;
-            
-            /* iOS Notch and Bottom Indicator Handling */
-            padding-top: env(safe-area-inset-top);
-            padding-bottom: env(safe-area-inset-bottom);
-            padding-left: env(safe-area-inset-left);
-            padding-right: env(safe-area-inset-right);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            /* Scroll test ke liye continuous height */
+            min-height: 200vh; 
+            padding: 80px 20px;
         }
 
-        #app-root {
+        /* -------------------------------------------------------------
+           1. TOP FLOATING BUTTON (Sabse Upar Top Par Float Karega)
+        ------------------------------------------------------------- */
+        .float-btn-top {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 999999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
-        }
-
-        #bg-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
-        .web3-card {
-            position: relative;
-            z-index: 10;
-            padding: 2.5rem 2rem;
-            background: rgba(15, 23, 42, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 24px;
-            box-shadow: 0 0 50px rgba(0, 242, 254, 0.15);
-            text-align: center;
-            max-width: 90%;
-            width: 400px;
-        }
-
-        .web3-title {
-            font-size: 1.8rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, #38ef7d, #11998e, #00f2fe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .web3-subtitle {
+            top: env(safe-area-inset-top, 15px); /* iOS Notch handling + spacing */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999999999 !important; /* Maximum Viewport Priority Layer */
+            
+            padding: 12px 24px;
             font-size: 0.95rem;
-            color: #94a3b8;
-            margin-bottom: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(255, 8, 68, 0.5);
+            cursor: pointer;
+            outline: none;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .web3-btn {
-            width: 100%;
-            padding: 16px 24px;
+        .float-btn-top:active {
+            transform: translateX(-50%) scale(0.92);
+        }
+
+        /* -------------------------------------------------------------
+           2. BOTTOM FLOATING BUTTON (Sabse Upar Bottom Par Float Karega)
+        ------------------------------------------------------------- */
+        .float-btn-bottom {
+            position: fixed;
+            bottom: env(safe-area-inset-bottom, 20px); /* iOS Bottom Bar handling */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999999999 !important; /* Maximum Viewport Priority Layer */
+            
+            padding: 14px 28px;
             font-size: 1rem;
             font-weight: 700;
             color: #0f172a;
             background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
             border: none;
-            border-radius: 14px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.5);
             cursor: pointer;
-            box-shadow: 0 0 25px rgba(0, 242, 254, 0.4);
-            transition: all 0.2s ease;
+            outline: none;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .web3-btn:active {
-            transform: scale(0.96);
-            box-shadow: 0 0 10px rgba(0, 242, 254, 0.6);
+        .float-btn-bottom:active {
+            transform: translateX(-50%) scale(0.92);
         }
 
-        :fullscreen, :-webkit-full-screen, :-moz-full-screen {
-            width: 100vw !important;
-            height: 100vh !important;
+        /* Demo Page Content */
+        .content-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
 
-    <div id="app-root">
-        <canvas id="bg-canvas"></canvas>
-        
-        <div class="web3-card">
-            <div class="web3-title">Universal Web3 Engine</div>
-            <p class="web3-subtitle" id="status-text">Detecting Platform Specs...</p>
-            <button class="web3-btn" id="connect-btn">ACTIVATE FULLSCREEN</button>
-        </div>
+    <!-- TOP FLOATING OVERLAY BUTTON -->
+    <button class="float-btn-top" onclick="alert('Top Float Triggered!')">
+        ⚡ TOP OVERLAY FLOAT
+    </button>
+
+    <!-- DEMO PAGE SCROLL CONTENT -->
+    <div class="content-box">
+        <h2>Floating Elements Demo</h2>
+        <p>Aap page ko kitna bhi scroll karenge, yeh dono buttons browser ke baki saare components ke upar float karte rahenge.</p>
     </div>
 
-    <script>
-        // --- Universal Android & iOS Platform Detector Engine ---
-        class UniversalFullscreenEngine {
-            constructor(rootElement) {
-                this.root = rootElement;
-                this.isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-                this.isAndroid = /Android/.test(navigator.userAgent);
-            }
+    <div class="content-box" style="margin-top: 300px;">
+        <h3>Middle Section</h3>
+        <p>Yeh section dikhata hai ki background scroll hone ke bawajood floating buttons fixed rahte hain.</p>
+    </div>
 
-            async execute() {
-                const elem = this.root;
+    <!-- BOTTOM FLOATING OVERLAY BUTTON -->
+    <button class="float-btn-bottom" onclick="alert('Bottom Float Triggered!')">
+        🚀 BOTTOM OVERLAY FLOAT
+    </button>
 
-                // 1. Android & Modern Desktop APIs
-                try {
-                    if (elem.requestFullscreen) {
-                        await elem.requestFullscreen();
-                        return;
-                    } else if (elem.webkitRequestFullscreen) {
-                        await elem.webkitRequestFullscreen();
-                        return;
-                    } else if (elem.mozRequestFullScreen) {
-                        await elem.mozRequestFullScreen();
-                        return;
-                    }
-                } catch (err) {
-                    console.warn("Native OS Browser API restricted. Activating Viewport Engine.");
-                }
-
-                // 2. iOS Specific Fallback Handling
-                if (this.isIOS) {
-                    this.applyIOSViewportHack();
-                } else {
-                    this.applyAndroidViewportHack();
-                }
-            }
-
-            applyIOSViewportHack() {
-                this.root.style.position = 'fixed';
-                this.root.style.height = '-webkit-fill-available';
-                window.scrollTo(0, 0);
-                document.getElementById('status-text').innerText = "iOS Edge-to-Edge Viewport Active";
-            }
-
-            applyAndroidViewportHack() {
-                this.root.style.position = 'fixed';
-                this.root.style.height = '100dvh';
-                window.scrollTo(0, 1);
-                document.getElementById('status-text').innerText = "Android Immersive Mode Active";
-            }
-        }
-
-        const engine = new UniversalFullscreenEngine(document.getElementById('app-root'));
-
-        function triggerApp() {
-            engine.execute();
-        }
-
-        document.getElementById('connect-btn').addEventListener('click', (e) => {
-            e.stopPropagation();
-            triggerApp();
-        });
-
-        ['click', 'touchstart', 'pointerdown'].forEach(eventType => {
-            document.addEventListener(eventType, function initTouch() {
-                triggerApp();
-                document.removeEventListener(eventType, initTouch);
-            }, { once: true });
-        });
-
-        // --- Animated Web3 Background Engine ---
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        let nodes = Array.from({ length: 40 }, () => ({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            vx: (Math.random() - 0.5) * 1.2,
-            vy: (Math.random() - 0.5) * 1.2
-        }));
-
-        function drawWeb3Nodes() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#00f2fe";
-            ctx.strokeStyle = "rgba(0, 242, 254, 0.15)";
-
-            nodes.forEach((node, i) => {
-                node.x += node.vx;
-                node.y += node.vy;
-
-                if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
-                if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
-
-                ctx.beginPath();
-                ctx.arc(node.x, node.y, 2, 0, Math.PI * 2);
-                ctx.fill();
-
-                for (let j = i + 1; j < nodes.length; j++) {
-                    let dx = nodes[j].x - node.x;
-                    let dy = nodes[j].y - node.y;
-                    let dist = Math.sqrt(dx * dx + dy * dy);
-
-                    if (dist < 120) {
-                        ctx.beginPath();
-                        ctx.moveTo(node.x, node.y);
-                        ctx.lineTo(nodes[j].x, nodes[j].y);
-                        ctx.stroke();
-                    }
-                }
-            });
-            requestAnimationFrame(drawWeb3Nodes);
-        }
-        drawWeb3Nodes();
-    </script>
 </body>
 </html>
-
-
-<!-- Meta tags jo In-App Browser ko Force Edge-to-Edge frame me lock karte hain -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-<style>
-  /* Screen ko viewport boundaries par fix karne ke liye */
-  html, body {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100dvh; /* Dynamic Viewport Height for Modern WebViews */
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-  }
-</style>
-// Webpage load hote hi scroll trick trigger karein
-window.addEventListener("load", function() {
-    setTimeout(function() {
-        window.scrollTo(0, 1);
-    }, 0);
-});
