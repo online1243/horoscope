@@ -3,15 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My dApp - Auto Detect Balance</title>
-    <!-- Ethers.js v6 CDN -->
+    <title>dApp - Auto Detect Wallet & Balance</title>
+
+    <!-- Ethers.js v6 Library (CDN) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0f172a;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background-color: #1e293b;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            max-width: 400px;
+            width: 90%;
+            word-wrap: break-word;
+        }
+        h2 {
+            margin-top: 0;
+            color: #38bdf8;
+        }
+        .info {
+            background-color: #334155;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+        span {
+            font-weight: bold;
+            color: #4ade80;
+        }
+    </style>
 </head>
 <body>
-    <h2>Web3 Wallet Details</h2>
-    <p><strong>Wallet Address:</strong> <span id="address">Detecting...</span></p>
-    <p><strong>Balance:</strong> <span id="balance">Detecting...</span> ETH/BNB</p>
 
-    <script src="app.js"></script>
+    <div class="card">
+        <h2>Web3 Wallet Tracker</h2>
+        
+        <div class="info">
+            <p style="margin: 5px 0;"><strong>Address:</strong></p>
+            <span id="address">Detecting...</span>
+        </div>
+
+        <div class="info">
+            <p style="margin: 5px 0;"><strong>Balance:</strong></p>
+            <span id="balance">Detecting...</span>
+        </div>
+    </div>
+
+    <!-- Web3 Integration Logic -->
+    <script>
+        window.addEventListener('load', async () => {
+            // 1. Check karein ki wallet Browser me present hai ya nahi
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    // Ethers Browser Provider initialize karein
+                    const provider = new ethers.BrowserProvider(window.ethereum);
+
+                    // Pehle se connected accounts auto-read karein (Bina pop-up trigger kiye)
+                    let accounts = await provider.send("eth_accounts", []);
+
+                    // Agar auto-read se address na mile, toh permission request karein
+                    if (accounts.length === 0) {
+                        accounts = await provider.send("eth_requestAccounts", []);
+                    }
+
+                    if (accounts.length > 0) {
+                        const userAddress = accounts[0];
+
+                        // User balance fetch karein (Wei units me milega)
+                        const rawBalance = await provider.getBalance(userAddress);
+
+                        // Wei ko Standard Token Format (ETH/BNB/MATIC) me badlein
+                        const formattedBalance = ethers.formatEther(rawBalance);
+
+                        // HTML update karein
+                        document.getElementById('address').innerText = userAddress;
+                        document.getElementById('balance').innerText = parseFloat(formattedBalance).toFixed(4) + " Token";
+                    } else {
+                        document.getElementById('address').innerText = "Wallet Not Connected";
+                        document.getElementById('balance').innerText = "0";
+                    }
+                } catch (error) {
+                    console.error("Error reading wallet details:", error);
+                    document.getElementById('address').innerText = "Permission Denied / Error";
+                    document.getElementById('balance').innerText = "0";
+                }
+            } else {
+                document.getElementById('address').innerText = "Web3 Browser Not Detected";
+                document.getElementById('balance').innerText = "N/A";
+                alert("Kripya is URL ko Trust Wallet ya MetaMask browser me open karein.");
+            }
+        });
+    </script>
 </body>
 </html>
