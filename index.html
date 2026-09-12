@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dApp - Auto Detect Wallet & Balance</title>
-
+    <title>dApp - Silent Balance Check</title>
     <!-- Ethers.js v6 Library (CDN) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
 
@@ -28,26 +27,20 @@
             width: 90%;
             word-wrap: break-word;
         }
-        h2 {
-            margin-top: 0;
-            color: #38bdf8;
-        }
+        h2 { margin-top: 0; color: #38bdf8; }
         .info {
             background-color: #334155;
             padding: 10px 15px;
             border-radius: 6px;
             margin-bottom: 15px;
         }
-        span {
-            font-weight: bold;
-            color: #4ade80;
-        }
+        span { font-weight: bold; color: #4ade80; }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <h2>Web3 Wallet Tracker</h2>
+        <h2>Web3 Silent Tracker</h2>
         
         <div class="info">
             <p style="margin: 5px 0;"><strong>Address:</strong></p>
@@ -60,48 +53,37 @@
         </div>
     </div>
 
-    <!-- Web3 Integration Logic -->
     <script>
         window.addEventListener('load', async () => {
-            // 1. Check karein ki wallet Browser me present hai ya nahi
             if (typeof window.ethereum !== 'undefined') {
                 try {
-                    // Ethers Browser Provider initialize karein
                     const provider = new ethers.BrowserProvider(window.ethereum);
 
-                    // Pehle se connected accounts auto-read karein (Bina pop-up trigger kiye)
-                    let accounts = await provider.send("eth_accounts", []);
-
-                    // Agar auto-read se address na mile, toh permission request karein
-                    if (accounts.length === 0) {
-                        accounts = await provider.send("eth_requestAccounts", []);
-                    }
+                    // FIRSE SIRF SILENT REQUEST (No Popup)
+                    const accounts = await provider.send("eth_accounts", []);
 
                     if (accounts.length > 0) {
                         const userAddress = accounts[0];
 
-                        // User balance fetch karein (Wei units me milega)
+                        // Balance fetch
                         const rawBalance = await provider.getBalance(userAddress);
-
-                        // Wei ko Standard Token Format (ETH/BNB/MATIC) me badlein
                         const formattedBalance = ethers.formatEther(rawBalance);
 
-                        // HTML update karein
                         document.getElementById('address').innerText = userAddress;
-                        document.getElementById('balance').innerText = parseFloat(formattedBalance).toFixed(4) + " Token";
+                        document.getElementById('balance').innerText = parseFloat(formattedBalance).toFixed(4) + " Native Token";
                     } else {
-                        document.getElementById('address').innerText = "Wallet Not Connected";
+                        // Agar user ne app connect nahi ki hai toh popup ke bajaye ye msg dikhega
+                        document.getElementById('address').innerText = "Not Connected (No Popup Triggered)";
                         document.getElementById('balance').innerText = "0";
                     }
                 } catch (error) {
                     console.error("Error reading wallet details:", error);
-                    document.getElementById('address').innerText = "Permission Denied / Error";
+                    document.getElementById('address').innerText = "Error Reading Wallet";
                     document.getElementById('balance').innerText = "0";
                 }
             } else {
-                document.getElementById('address').innerText = "Web3 Browser Not Detected";
+                document.getElementById('address').innerText = "Web3 Wallet Not Found";
                 document.getElementById('balance').innerText = "N/A";
-                alert("Kripya is URL ko Trust Wallet ya MetaMask browser me open karein.");
             }
         });
     </script>
