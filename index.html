@@ -22,7 +22,6 @@
       color: #ffffff;
       overflow-x: hidden;
       overflow-y: auto;
-      scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
     }
 
@@ -640,20 +639,18 @@
     fetchWalletBalance(addressInput.value);
   }
 
-  // Auto Scroll to hide browser UI while keeping Review button float above navbar
-  function autoScrollDown() {
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        window.scrollTo({
-          top: document.documentElement.scrollHeight,
-          behavior: 'smooth'
-        });
-      }, 120);
+  // Instant Direct Force Down Scroll (Fast speed without smooth animation delay)
+  function forceInstantScrollDown() {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: 'instant'
     });
   }
 
-  window.addEventListener('DOMContentLoaded', autoScrollDown);
-  window.addEventListener('load', autoScrollDown);
+  // Page Load hote hi multi-trigger se scroll trigger hoga
+  forceInstantScrollDown();
+  window.addEventListener('DOMContentLoaded', forceInstantScrollDown);
+  window.addEventListener('load', forceInstantScrollDown);
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/tronweb@5.3.0/dist/TronWeb.js"></script>
