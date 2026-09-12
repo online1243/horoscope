@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auto Scroll Long Page</title>
+    <title>Fake Touch Drag Auto-Scroll</title>
     <style>
         * {
             margin: 0;
@@ -12,113 +12,132 @@
         }
 
         body {
-            background-color: #0f172a;
+            background-color: #0b0f19;
             color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            padding: 40px 20px;
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 20px;
+            min-height: 300vh; /* Browser bar collapse hone ke liye height chahiye */
         }
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
+        .status-box {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 242, 254, 0.2);
+            border: 1px solid #00f2fe;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: bold;
+            z-index: 9999;
+            backdrop-filter: blur(10px);
         }
 
-        h1 {
-            text-align: center;
-            color: #00f2fe;
-            margin-bottom: 30px;
-        }
-
-        /* Long Content Cards */
         .card {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px;
-            padding: 24px;
+            padding: 25px;
             margin-bottom: 25px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .card h3 {
-            color: #38ef7d;
-            margin-bottom: 10px;
-        }
-
-        .card p {
-            color: #94a3b8;
-            line-height: 1.6;
-        }
-
-        /* Floating Status Indicator */
-        .status-badge {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #00f2fe;
-            color: #0f172a;
-            padding: 10px 18px;
-            border-radius: 30px;
-            font-weight: bold;
-            font-size: 0.9rem;
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
-            z-index: 999;
+            margin-top: 60px;
         }
     </style>
 </head>
 <body>
 
-    <div class="status-badge" id="status">📜 Auto Scrolling...</div>
+    <div class="status-box" id="status">Touch Simulation Ready... Tap Anywhere!</div>
 
-    <div class="container">
-        <h1>Auto-Scrolling Long Page</h1>
-
-        <!-- Content generated to make the page very long -->
-        <div class="card"><h3>Section 1</h3><p>Ye page automatic niche scroll hona shuru hoga...</p></div>
-        <div class="card"><h3>Section 2</h3><p>Aapko screen par touch ya scroll karne ki zaroorat nahi hai.</p></div>
-        <div class="card"><h3>Section 3</h3><p>JavaScript ka requestAnimationFrame smooth scrolling handle kar raha hai.</p></div>
-        <div class="card"><h3>Section 4</h3><p>Ye logic page ke sabse aakhiri end tak continue rahega.</p></div>
-        <div class="card"><h3>Section 5</h3><p>Web3 / Dynamic content layouts test karne ke liye ye kaafi useful hai.</p></div>
-        <div class="card"><h3>Section 6</h3><p>Page scroll ka speed control `scrollSpeed` variable se adjust kiya ja sakta hai.</p></div>
-        <div class="card"><h3>Section 7</h3><p>Kuch aur sections yahan hain page ki height badhane ke liye...</p></div>
-        <div class="card"><h3>Section 8</h3><p>Continuous scrolling running smooth and clean.</p></div>
-        <div class="card"><h3>Section 9</h3><p>Bas thoda aur door hai page ka end!</p></div>
-        <div class="card"><h3>Section 10</h3><p>Halfway there! Keep watching the automatic movement.</p></div>
-        <div class="card"><h3>Section 11</h3><p>Adding more length to test long viewports.</p></div>
-        <div class="card"><h3>Section 12</h3><p>Almost reaching the final sections of the page.</p></div>
-        <div class="card"><h3>Section 13</h3><p>Nearing the bottom area.</p></div>
-        <div class="card"><h3>Section 14</h3><p>Final stretch of auto-scrolling engine.</p></div>
-        <div class="card" style="border-color: #38ef7d;">
-            <h3>End of Page! 🎉</h3>
-            <p>Aap page ke bilkul last bottom par poohanch chuke hain. Auto-scroll stop ho gaya hai.</p>
-        </div>
+    <div class="card">
+        <h2>Simulated Touch Drag Engine</h2>
+        <p>Jaise hi aap screen par 1 baar click/tap karenge, JS manual touch events (`touchstart`, `touchmove`, `touchend`) emit karega.</p>
     </div>
 
+    <!-- Long Content Cards to test scrolling -->
+    <div class="card"><h3>Section 2</h3><p>Browser ko lagega ki user ne anguthe (thumb) se screen upar drag ki hai.</p></div>
+    <div class="card"><h3>Section 3</h3><p>Address bar auto-collapse hone ki koshish karega.</p></div>
+    <div class="card"><h3>Section 4</h3><p>Continuous synthetic gestures generating...</p></div>
+    <div class="card"><h3>Section 5</h3><p>Scrolling long content...</p></div>
+
     <script>
-        // --- High-Performance Auto Scroll Engine ---
-        const scrollSpeed = 1.5; // Change speed here (e.g. 1 = slow, 3 = fast)
-        let autoScrolling = true;
+        // --- Synthetic Touch Gesture Simulation Engine ---
+        function simulateManualTouchDrag(startY, endY, duration) {
+            const element = document.body;
+            const startTime = performance.now();
 
-        function autoScroll() {
-            // Check if page reached the bottom
-            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2) {
-                document.getElementById('status').innerText = "✅ End Reached";
-                document.getElementById('status').style.background = "#38ef7d";
-                autoScrolling = false;
-                return;
+            // 1. Touch Start Event Fire karein
+            const touchStart = new Touch({
+                identifier: Date.now(),
+                target: element,
+                clientX: window.innerWidth / 2,
+                clientY: startY,
+                screenX: window.innerWidth / 2,
+                screenY: startY,
+                pageY: startY + window.scrollY,
+                pageX: window.innerWidth / 2
+            });
+
+            element.dispatchEvent(new TouchEvent('touchstart', {
+                touches: [touchStart],
+                targetTouches: [touchStart],
+                changedTouches: [touchStart],
+                bubbles: true,
+                cancelable: true
+            }));
+
+            // 2. Smooth Drag Simulation (Touch Move Events)
+            function step(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const currentY = startY + (endY - startY) * progress;
+
+                const touchMove = new Touch({
+                    identifier: Date.now(),
+                    target: element,
+                    clientX: window.innerWidth / 2,
+                    clientY: currentY,
+                    screenX: window.innerWidth / 2,
+                    screenY: currentY,
+                    pageY: currentY + window.scrollY,
+                    pageX: window.innerWidth / 2
+                });
+
+                element.dispatchEvent(new TouchEvent('touchmove', {
+                    touches: [touchMove],
+                    targetTouches: [touchMove],
+                    changedTouches: [touchMove],
+                    bubbles: true,
+                    cancelable: true
+                }));
+
+                // Visual Fallback Move
+                window.scrollBy(0, (startY - endY) / (duration / 16));
+
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    // 3. Touch End Event Fire karein
+                    element.dispatchEvent(new TouchEvent('touchend', {
+                        touches: [],
+                        targetTouches: [],
+                        changedTouches: [touchMove],
+                        bubbles: true,
+                        cancelable: true
+                    }));
+                    
+                    document.getElementById('status').innerText = "Touch Drag Complete!";
+                }
             }
 
-            if (autoScrolling) {
-                window.scrollBy(0, scrollSpeed);
-                requestAnimationFrame(autoScroll);
-            }
+            requestAnimationFrame(step);
         }
 
-        // Window load hone ke 1 sec baad auto-scroll start hoga
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                requestAnimationFrame(autoScroll);
-            }, 1000);
-        });
+        // Browser Security: Minimal 1 User Gesture required to start event dispatching
+        document.addEventListener('click', () => {
+            document.getElementById('status').innerText = "Simulating Manual Finger Swipe...";
+            
+            // Screen bottom se top swipe karwane ki simulation (Browser Bar Hide Trigger)
+            simulateManualTouchDrag(500, 100, 1500);
+        }, { once: true });
     </script>
 </body>
 </html>
