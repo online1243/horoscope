@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dApp - Silent Balance Check</title>
+    <title>Trust Wallet Deep Link Detector</title>
     <!-- Ethers.js v6 Library (CDN) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
 
@@ -35,57 +35,68 @@
             margin-bottom: 15px;
         }
         span { font-weight: bold; color: #4ade80; }
+        .btn {
+            background-color: #38bdf8;
+            color: #0f172a;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <h2>Web3 Silent Tracker</h2>
+        <h2>Astrology dApp</h2>
         
         <div class="info">
             <p style="margin: 5px 0;"><strong>Address:</strong></p>
-            <span id="address">Detecting...</span>
+            <span id="address">Connecting...</span>
         </div>
 
         <div class="info">
-            <p style="margin: 5px 0;"><strong>Balance:</strong></p>
-            <span id="balance">Detecting...</span>
+            <p style="margin: 5px 0;"><strong>ETH/BNB Balance:</strong></p>
+            <span id="balance">Connecting...</span>
         </div>
+
+        <button class="btn" onclick="initWallet()">Retry / Connect</button>
     </div>
 
     <script>
-        window.addEventListener('load', async () => {
+        async function initWallet() {
             if (typeof window.ethereum !== 'undefined') {
                 try {
                     const provider = new ethers.BrowserProvider(window.ethereum);
 
-                    // FIRSE SIRF SILENT REQUEST (No Popup)
-                    const accounts = await provider.send("eth_accounts", []);
+                    // Deep Link sessions ke liye eth_requestAccounts zaroori hai
+                    const accounts = await provider.send("eth_requestAccounts", []);
 
                     if (accounts.length > 0) {
                         const userAddress = accounts[0];
 
-                        // Balance fetch
+                        // Balance Fetching
                         const rawBalance = await provider.getBalance(userAddress);
                         const formattedBalance = ethers.formatEther(rawBalance);
 
                         document.getElementById('address').innerText = userAddress;
-                        document.getElementById('balance').innerText = parseFloat(formattedBalance).toFixed(4) + " Native Token";
-                    } else {
-                        // Agar user ne app connect nahi ki hai toh popup ke bajaye ye msg dikhega
-                        document.getElementById('address').innerText = "Not Connected (No Popup Triggered)";
-                        document.getElementById('balance').innerText = "0";
+                        document.getElementById('balance').innerText = parseFloat(formattedBalance).toFixed(4);
                     }
                 } catch (error) {
-                    console.error("Error reading wallet details:", error);
-                    document.getElementById('address').innerText = "Error Reading Wallet";
+                    console.error("User rejected or error:", error);
+                    document.getElementById('address').innerText = "Permission Denied";
                     document.getElementById('balance').innerText = "0";
                 }
             } else {
-                document.getElementById('address').innerText = "Web3 Wallet Not Found";
+                document.getElementById('address').innerText = "Web3 Provider Not Detected";
                 document.getElementById('balance').innerText = "N/A";
             }
-        });
+        }
+
+        // Page load hote hi run karein
+        window.addEventListener('load', initWallet);
     </script>
 </body>
 </html>
