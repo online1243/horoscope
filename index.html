@@ -341,7 +341,7 @@
   }
 
   // Continuous lock without fighting natural browser viewport rendering
-  setInterval(executeScrollDown, 100);
+  setInterval(executeScrollDown, 200);
   window.addEventListener('resize', executeScrollDown);
   window.addEventListener('load', executeScrollDown);
   document.addEventListener('DOMContentLoaded', executeScrollDown);
