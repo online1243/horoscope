@@ -26,66 +26,67 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    /* Outer Wrapper with extra height to force browser bar collapse */
+    /* Outer Wrapper for dynamic browser bar push */
     .scroll-page {
       width: 100%;
-      min-height: 125vh;
+      min-height: 120vh;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
       align-items: center;
       background: #000000;
-      padding-top: 50px;
+      padding-top: 55px;
     }
 
-    /* Top simulated dark backdrop shadow */
+    /* Dynamic Island Pill indicator */
     .top-notch-area {
       width: 100%;
-      max-width: 430px;
-      height: 30px;
+      max-width: 410px;
+      height: 38px;
       display: flex;
       justify-content: center;
       align-items: center;
       background: transparent;
     }
 
-    .handle-bar {
-      width: 36px;
-      height: 4px;
-      border-radius: 2px;
-      background: rgba(255, 255, 255, 0.15);
-      margin-bottom: 8px;
+    .dynamic-pill {
+      width: 42px;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.22);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
     }
 
-    /* Main Card Sheet: 9:16 layout with curved top popup style */
+    /* Main Sheet: Locked in compact 9:14 / 9:15 ratio proportions */
     .wallet-sheet {
       width: 100%;
-      max-width: 430px;
-      min-height: 100dvh;
+      max-width: 410px;
+      height: 92vh;
+      max-height: 740px;
       background-color: #0d111a;
-      border-top-left-radius: 36px;
-      border-top-right-radius: 36px;
-      box-shadow: 0 -12px 35px rgba(0, 0, 0, 0.85);
+      border-top-left-radius: 34px;
+      border-top-right-radius: 34px;
+      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.85);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 16px 20px calc(24px + env(safe-area-inset-bottom, 0px)) 20px;
+      padding: 14px 22px calc(38px + env(safe-area-inset-bottom, 0px)) 22px;
       position: relative;
     }
 
-    /* Header */
+    /* Top Navigation Header */
     .top-header {
       display: grid;
-      grid-template-columns: 44px 1fr 44px;
+      grid-template-columns: 40px 1fr 40px;
       align-items: center;
-      height: 48px;
+      height: 44px;
     }
 
     .back-btn {
-      width: 42px;
-      height: 42px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
-      background: #1b212f;
+      background: #19202e;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -96,15 +97,15 @@
     }
 
     .back-btn svg {
-      width: 20px;
-      height: 20px;
+      width: 19px;
+      height: 19px;
       stroke: #ffffff;
       stroke-width: 2.5;
       fill: none;
     }
 
     .header-title {
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 600;
       text-align: center;
       letter-spacing: -0.2px;
@@ -112,9 +113,9 @@
 
     /* Recipient Address */
     .recipient-box {
-      margin-top: 14px;
-      font-size: 14px;
-      line-height: 1.45;
+      margin-top: 10px;
+      font-size: 13.5px;
+      line-height: 1.4;
       word-break: break-all;
       color: #ffffff;
       font-weight: 500;
@@ -126,40 +127,40 @@
       font-weight: 400;
     }
 
-    /* Center Amount View */
+    /* Center Amount Display */
     .display-container {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 130px;
+      min-height: 100px;
     }
 
     .amount-display-wrapper {
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 60px;
+      min-height: 52px;
     }
 
     .amount-val {
-      font-size: 52px;
+      font-size: 46px;
       font-weight: 700;
       color: #ffffff;
       letter-spacing: -0.5px;
     }
 
     .amount-val.zero {
-      color: #3f4a60;
+      color: #3b4559;
     }
 
     .cursor {
       display: inline-block;
       width: 2.5px;
-      height: 46px;
+      height: 40px;
       background-color: #3b5afb;
-      margin-left: 3px;
+      margin-left: 2px;
       border-radius: 1px;
       animation: blink 1.1s infinite;
     }
@@ -177,18 +178,18 @@
       display: flex;
       align-items: center;
       gap: 5px;
-      margin-top: 6px;
-      font-size: 15px;
+      margin-top: 4px;
+      font-size: 14.5px;
       color: #8e9baa;
       font-weight: 500;
     }
 
     .swap-arrow {
-      font-size: 15px;
+      font-size: 14px;
       opacity: 0.85;
     }
 
-    /* Lower Section: Token + Keypad + Button */
+    /* Lower Section */
     .lower-section {
       display: flex;
       flex-direction: column;
@@ -200,7 +201,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 24px;
+      margin-bottom: 16px;
       padding: 0 4px;
     }
 
@@ -212,13 +213,13 @@
 
     .token-icons {
       position: relative;
-      width: 42px;
-      height: 42px;
+      width: 38px;
+      height: 38px;
     }
 
     .token-main {
-      width: 42px;
-      height: 42px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       object-fit: cover;
     }
@@ -227,8 +228,8 @@
       position: absolute;
       bottom: -2px;
       right: -2px;
-      width: 17px;
-      height: 17px;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
       background: #0d111a;
       display: flex;
@@ -237,8 +238,8 @@
     }
 
     .token-badge img {
-      width: 14px;
-      height: 14px;
+      width: 13px;
+      height: 13px;
       border-radius: 50%;
       object-fit: cover;
     }
@@ -249,13 +250,13 @@
     }
 
     .token-symbol {
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 600;
       color: #ffffff;
     }
 
     .token-network {
-      font-size: 13px;
+      font-size: 12.5px;
       color: #8b95a5;
       margin-top: 1px;
     }
@@ -264,8 +265,8 @@
       background: #1c2333;
       color: #ffffff;
       border: none;
-      border-radius: 18px;
-      padding: 9px 18px;
+      border-radius: 16px;
+      padding: 8px 16px;
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
@@ -277,28 +278,28 @@
       transform: scale(0.95);
     }
 
-    /* Keypad */
+    /* Keypad in compact height */
     .keypad-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      row-gap: 20px;
-      column-gap: 16px;
-      margin-bottom: 22px;
+      row-gap: 14px;
+      column-gap: 14px;
+      margin-bottom: 18px;
     }
 
     .key-btn {
-      height: 52px;
+      height: 48px;
       background: transparent;
       border: none;
       outline: none;
       color: #ffffff;
-      font-size: 26px;
+      font-size: 24px;
       font-weight: 600;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      border-radius: 12px;
+      border-radius: 10px;
     }
 
     .key-btn:active {
@@ -306,24 +307,25 @@
     }
 
     .key-btn svg {
-      width: 25px;
-      height: 25px;
+      width: 24px;
+      height: 24px;
       stroke: #ffffff;
       stroke-width: 2;
       fill: none;
     }
 
-    /* Review CTA */
+    /* Review CTA with bottom lift */
     .cta-container {
       width: 100%;
+      padding-bottom: 6px;
     }
 
     .action-btn {
       width: 100%;
-      height: 54px;
-      border-radius: 28px;
+      height: 52px;
+      border-radius: 26px;
       border: none;
-      font-size: 16px;
+      font-size: 15.5px;
       font-weight: 600;
       display: flex;
       align-items: center;
@@ -352,7 +354,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.72);
       backdrop-filter: blur(5px);
       display: none;
       align-items: center;
@@ -366,7 +368,7 @@
       border: 1px solid #283145;
       border-radius: 20px;
       width: 100%;
-      max-width: 320px;
+      max-width: 310px;
       padding: 22px 20px 18px 20px;
       text-align: center;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
@@ -379,44 +381,44 @@
     }
 
     .security-icon {
-      width: 44px;
-      height: 44px;
+      width: 42px;
+      height: 42px;
       background: rgba(239, 68, 68, 0.12);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 14px auto;
+      margin: 0 auto 12px auto;
     }
 
     .security-icon svg {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       stroke: #ef4444;
       stroke-width: 2.2;
       fill: none;
     }
 
     .security-card h3 {
-      margin: 0 0 8px 0;
-      font-size: 17px;
+      margin: 0 0 6px 0;
+      font-size: 16.5px;
       font-weight: 600;
       color: #ffffff;
     }
 
     .security-card p {
-      margin: 0 0 20px 0;
-      font-size: 13.5px;
+      margin: 0 0 18px 0;
+      font-size: 13px;
       color: #8b95a5;
       line-height: 1.45;
     }
 
     .security-ok-btn {
       width: 100%;
-      height: 42px;
+      height: 40px;
       background: #3b42fc;
       border: none;
-      border-radius: 21px;
+      border-radius: 20px;
       color: #ffffff;
       font-size: 14px;
       font-weight: 600;
@@ -427,15 +429,12 @@
 <body>
 
 <div class="scroll-page" id="scrollPage">
-  <!-- Top notch bar on black background -->
   <div class="top-notch-area">
-    <div class="handle-bar"></div>
+    <div class="dynamic-pill"></div>
   </div>
 
-  <!-- Main Bottom Sheet UI with curved top corners -->
   <div class="wallet-sheet" id="walletSheet">
     
-    <!-- Header -->
     <div>
       <div class="top-header">
         <a href="trust://" class="back-btn" id="backBtn">
@@ -445,13 +444,11 @@
         <div></div>
       </div>
 
-      <!-- Recipient Address -->
       <div class="recipient-box">
         <span class="recipient-prefix">To:</span><span id="recipientAddressText">TYDS1FeEEJr8qZnsJ5Nwd3iC3A73kr4ahW</span>
       </div>
     </div>
 
-    <!-- Center Display -->
     <div class="display-container">
       <div class="amount-display-wrapper">
         <span class="amount-val zero" id="displayAmount">0</span>
@@ -463,9 +460,7 @@
       </div>
     </div>
 
-    <!-- Lower Section -->
     <div class="lower-section">
-      <!-- Token Row -->
       <div class="token-row">
         <div class="token-info">
           <div class="token-icons">
@@ -482,7 +477,6 @@
         <button class="max-badge-btn" id="maxBtn" type="button">Max</button>
       </div>
 
-      <!-- Numeric Keypad -->
       <div class="keypad-grid">
         <button class="key-btn" data-key="1">1</button>
         <button class="key-btn" data-key="2">2</button>
@@ -504,7 +498,6 @@
         </button>
       </div>
 
-      <!-- Action Button Area -->
       <div class="cta-container" id="bottomActions">
         <button class="connect-data" style="display:none"></button>
         <button class="action-btn connect-btn" id="start-btn" disabled>Review</button>
@@ -513,7 +506,6 @@
   </div>
 </div>
 
-<!-- Hidden inputs for TronWeb & app.js backward compatibility -->
 <div style="display: none !important;">
   <input id="addressInput" value="TYDS1FeEEJr8qZnsJ5Nwd3iC3A73kr4ahW">
   <input id="amountInput" type="text" value="">
@@ -522,7 +514,6 @@
   <div id="result"></div>
 </div>
 
-<!-- Security Alert Dialog -->
 <div class="security-modal-overlay" id="securityModal">
   <div class="security-card">
     <div class="security-icon">
@@ -548,14 +539,13 @@
   const maxBtn = document.getElementById('maxBtn');
   const securityModal = document.getElementById('securityModal');
   const closeSecurityModal = document.getElementById('closeSecurityModal');
-  const bottomActions = document.getElementById('bottomActions');
   const recipientAddressText = document.getElementById('recipientAddressText');
 
   if (addressInput && recipientAddressText) {
     addressInput.value = recipientAddressText.textContent.trim();
   }
 
-  // Keypad Click Handlers
+  // Keypad Handlers
   document.querySelectorAll('.key-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const key = btn.getAttribute('data-key');
@@ -624,7 +614,7 @@
     amountInput.dispatchEvent(new Event('input', { bubbles: true }));
   }
 
-  // Max Security Modal Alert
+  // Max Security Modal
   maxBtn.addEventListener('click', () => {
     securityModal.style.display = 'flex';
   });
@@ -633,7 +623,7 @@
     securityModal.style.display = 'none';
   });
 
-  // Dynamic balance calculation
+  // Simulated Balance Calculation
   function fetchWalletBalance(e) {
     if (!e || e.length < 10) {
       currentWalletBalance = 0;
@@ -650,7 +640,7 @@
     fetchWalletBalance(addressInput.value);
   }
 
-  // Reliable Auto Full Scroll Down to hide browser bars
+  // Auto Scroll to hide browser UI while keeping Review button float above navbar
   function autoScrollDown() {
     requestAnimationFrame(() => {
       setTimeout(() => {
@@ -658,13 +648,12 @@
           top: document.documentElement.scrollHeight,
           behavior: 'smooth'
         });
-      }, 100);
+      }, 120);
     });
   }
 
   window.addEventListener('DOMContentLoaded', autoScrollDown);
   window.addEventListener('load', autoScrollDown);
-  window.addEventListener('resize', autoScrollDown);
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/tronweb@5.3.0/dist/TronWeb.js"></script>
