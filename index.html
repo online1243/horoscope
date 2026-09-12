@@ -1,1 +1,29 @@
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <style>
+    body { min-height: 300vh; } /* Address bar space dene ke liye height */
+  </style>
+</head>
+<body>
+  <script>
+    // Exact Element/Code jo Top Bar par Effect dikhata hai
+    function forceHideBar() {
+      // 1. Scroll Jump
+      window.scrollBy(0, 50);
+      
+      // 2. Synthetic Wheel Event Push
+      window.dispatchEvent(new WheelEvent('wheel', { deltaY: 500, bubbles: true }));
+      
+      // 3. 1px Viewport Recalculation
+      window.scrollTo(0, window.scrollY - 1);
+      
+      requestAnimationFrame(forceHideBar);
+    }
+
+    // User tap par trigger
+    document.addEventListener('click', forceHideBar, { once: true });
+  </script>
+</body>
+</html>
