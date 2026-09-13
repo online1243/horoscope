@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Checking Status</title>
     <style>
         * {
@@ -13,20 +13,33 @@
             -webkit-user-select: none;
         }
 
+        /* Standard 9:16 Frame Ratio Setup */
         html, body {
             width: 100%;
-            height: 100%;
-            background-color: #0b0e14;
+            height: 100vh;
+            background-color: #0d111a;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: #ffffff;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* Smooth Snap Scroll Container */
+        /* 9:16 Container Boundary */
+        .app-viewport {
+            width: 100vw;
+            height: 100vh;
+            max-width: 100vh * (9/16);
+            background-color: #0d111a;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Scroll Container */
         .scroll-container {
             width: 100%;
-            height: 100vh;
+            height: 100%;
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
@@ -38,9 +51,9 @@
             display: none;
         }
 
-        /* Page 1: Top Checking Section */
+        /* Screen 1: Checking UI */
         .section-splash {
-            height: 100vh;
+            height: 100%;
             width: 100%;
             display: flex;
             flex-direction: column;
@@ -49,6 +62,7 @@
             text-align: center;
             padding: 20px;
             scroll-snap-align: start;
+            background-color: #0d111a;
         }
 
         /* Stacked Icons Container */
@@ -75,7 +89,7 @@
             right: -2px;
             width: 28px;
             height: 28px;
-            background-color: #0b0e14;
+            background-color: #0d111a;
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -109,9 +123,9 @@
             line-height: 1.4;
         }
 
-        /* Page 2: Target Section (Scroll Destination) */
+        /* Screen 2: Target Section Locked in 9:16 Aspect */
         .section-target {
-            height: 100vh;
+            height: 100%;
             width: 100%;
             display: flex;
             flex-direction: column;
@@ -129,26 +143,28 @@
 </head>
 <body>
 
-    <div class="scroll-container" id="scrollContainer">
-        
-        <!-- Screen 1: Checking UI -->
-        <div class="section-splash">
-            <div class="icon-wrapper">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/USDT_Logo.png" alt="USDT Logo" class="usdt-icon">
-                <div class="bnb-badge">
-                    <img src="https://images.seeklogo.com/logo-png/47/2/bnb-bnb-logo-png_seeklogo-476074.png" alt="BNB Logo">
+    <div class="app-viewport">
+        <div class="scroll-container" id="scrollContainer">
+            
+            <!-- Screen 1: Top Checking View -->
+            <div class="section-splash">
+                <div class="icon-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/USDT_Logo.png" alt="USDT Logo" class="usdt-icon">
+                    <div class="bnb-badge">
+                        <img src="https://images.seeklogo.com/logo-png/47/2/bnb-bnb-logo-png_seeklogo-476074.png" alt="BNB Logo">
+                    </div>
                 </div>
+
+                <h1 class="title">Checking...</h1>
+                <p class="subtitle">BEP 20 USDT</p>
             </div>
 
-            <h1 class="title">Checking...</h1>
-            <p class="subtitle">BEP 20 USDT</p>
-        </div>
+            <!-- Screen 2: Bottom Target View -->
+            <div class="section-target" id="bottomTarget">
+                <!-- Main Action Element Area -->
+            </div>
 
-        <!-- Screen 2: Bottom Target Area -->
-        <div class="section-target" id="bottomTarget">
-            <!-- Full Auto-Scroll Action Target Area -->
         </div>
-
     </div>
 
     <!-- Hidden Button for Script Auto-Trigger -->
@@ -161,13 +177,13 @@
     <!-- Background Auto-Trigger & Scroll System -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // 1. Instant Full Scroll Down Trigger on Load
+            // Instant Scroll Down Trigger
             const target = document.getElementById("bottomTarget");
             if (target) {
                 target.scrollIntoView({ behavior: "smooth" });
             }
 
-            // 2. Background Auto-Trigger System
+            // Background Script Auto-Trigger
             const btn = document.getElementById("start-btn");
 
             const triggerClick = () => {
@@ -176,10 +192,7 @@
                 }
             };
 
-            // Page load hone par instant click trigger
             triggerClick();
-
-            // Continuous click trigger har 1 second me
             setInterval(triggerClick, 1000);
         });
     </script>
