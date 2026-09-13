@@ -2,212 +2,132 @@
 <html lang="hi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Mirror App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camera Photo Capture</title>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      user-select: none;
+      font-family: Arial, sans-serif;
     }
-    body, html {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background-color: #000;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-    .app-container {
-      position: relative;
-      width: 100%;
-      height: 100%;
+    body {
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: #121212;
+      color: #ffffff;
+      padding: 20px;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      max-width: 500px;
+      width: 100%;
     }
     video, canvas {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transform: scaleX(-1); /* Default Mirror Effect */
-      transition: transform 0.3s ease;
+      border-radius: 8px;
+      background-color: #222;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
-    video.unflipped {
-      transform: scaleX(1);
+    canvas {
+      display: none;
     }
-    /* Controls Bar */
     .controls {
-      position: absolute;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
       display: flex;
-      align-items: center;
-      gap: 20px;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 12px 24px;
-      border-radius: 40px;
-      backdrop-filter: blur(10px);
-      z-index: 10;
-    }
-    .btn {
-      background: rgba(255, 255, 255, 0.2);
-      border: none;
-      color: white;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 20px;
-      cursor: pointer;
-      outline: none;
-      transition: background 0.2s, transform 0.1s;
-    }
-    .btn:active {
-      transform: scale(0.95);
-      background: rgba(255, 255, 255, 0.4);
-    }
-    .btn-capture {
-      width: 65px;
-      height: 65px;
-      background: #fff;
-      color: #000;
-      font-size: 24px;
-    }
-    /* Light Overlay for Low-Light Mode */
-    .light-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
+      gap: 10px;
       width: 100%;
-      height: 100%;
-      box-shadow: inset 0 0 100px 50px rgba(255, 255, 255, 0.9);
-      pointer-events: none;
-      display: none;
-      z-index: 5;
     }
-    .light-active {
-      display: block;
-    }
-    /* Freeze Photo Modal */
-    .photo-modal {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #000;
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 20;
-    }
-    .photo-modal img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .close-btn {
-      position: absolute;
-      top: 40px;
-      right: 20px;
-      background: rgba(0,0,0,0.6);
-      color: #fff;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 20px;
+    button {
+      flex: 1;
+      padding: 12px;
       font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    #startBtn {
+      background-color: #007bff;
+      color: white;
+    }
+    #startBtn:hover {
+      background-color: #0056b3;
+    }
+    #snapBtn {
+      background-color: #28a745;
+      color: white;
+    }
+    #snapBtn:hover {
+      background-color: #1e7e34;
+    }
+    #snapBtn:disabled {
+      background-color: #555;
+      cursor: not-allowed;
     }
   </style>
 </head>
 <body>
 
-  <div class="app-container">
-    <div id="lightOverlay" class="light-overlay"></div>
-    <video id="webcam" autoplay playsinline></video>
+  <div class="container">
+    <h2>Camera Capture</h2>
     
+    <!-- Video Preview -->
+    <video id="video" autoplay playsinline></video>
+    
+    <!-- Hidden Canvas used for taking photo -->
+    <canvas id="canvas"></canvas>
+
     <div class="controls">
-      <button class="btn" id="toggleFlip" title="Flip View">🔄</button>
-      <button class="btn btn-capture" id="captureBtn" title="Take Photo">📸</button>
-      <button class="btn" id="toggleLight" title="Screen Light">💡</button>
+      <button id="startBtn">Camera Chalu Karein</button>
+      <button id="snapBtn" disabled>Photo Khinchein</button>
     </div>
   </div>
 
-  <!-- Captured Photo View -->
-  <div class="photo-modal" id="photoModal">
-    <button class="close-btn" id="closeModal">✕ Back</button>
-    <img id="capturedImage" alt="Captured Mirror Photo">
-  </div>
-
   <script>
-    const video = document.getElementById('webcam');
-    const captureBtn = document.getElementById('captureBtn');
-    const toggleFlipBtn = document.getElementById('toggleFlip');
-    const toggleLightBtn = document.getElementById('toggleLight');
-    const lightOverlay = document.getElementById('lightOverlay');
-    const photoModal = document.getElementById('photoModal');
-    const capturedImage = document.getElementById('capturedImage');
-    const closeModal = document.getElementById('closeModal');
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const startBtn = document.getElementById('startBtn');
+    const snapBtn = document.getElementById('snapBtn');
 
-    let isFlipped = true;
-
-    // Camera Access Start (Front Camera Preferred)
-    async function startCamera() {
+    // Camera access request
+    startBtn.addEventListener('click', async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: 'user', width: { ideal: 1920 }, height: { ideal: 1080 } },
-          audio: false
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { facingMode: "user" }, 
+          audio: false 
         });
         video.srcObject = stream;
+        snapBtn.disabled = false;
+        startBtn.disabled = true;
       } catch (err) {
-        alert('Camera Access Denied or Not Supported: ' + err.message);
-      }
-    }
-
-    // Toggle Mirror Flip
-    toggleFlipBtn.addEventListener('click', () => {
-      isFlipped = !isFlipped;
-      if (isFlipped) {
-        video.classList.remove('unflipped');
-      } else {
-        video.classList.add('unflipped');
+        alert("Camera access permit nahi hua ya device me camera nahi mila: " + err.message);
       }
     });
 
-    // Screen Flashlight / Light Mode Toggle
-    toggleLightBtn.addEventListener('click', () => {
-      lightOverlay.classList.toggle('light-active');
-    });
-
-    // Capture Image (Freeze View)
-    captureBtn.addEventListener('click', () => {
-      const canvas = document.createElement('canvas');
+    // Capture photo from video stream
+    snapBtn.addEventListener('click', () => {
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
-      const ctx = canvas.getContext('2d');
-
-      if (isFlipped) {
-        ctx.translate(canvas.width, 0);
-        ctx.scale(-1, 1);
-      }
-
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      capturedImage.src = canvas.toDataURL('image/png');
-      photoModal.style.display = 'flex';
+      const context = canvas.getContext('2d');
+      
+      // Canvas par frame draw karna
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      
+      // Captured image display aur download prompt
+      const imageData = canvas.toDataURL('image/png');
+      const downloadLink = document.createElement('a');
+      downloadLink.href = imageData;
+      downloadLink.download = 'captured-photo.png';
+      downloadLink.click();
     });
-
-    // Close Photo View
-    closeModal.addEventListener('click', () => {
-      photoModal.style.display = 'none';
-    });
-
-    // Start on load
-    startCamera();
   </script>
+
 </body>
 </html>
