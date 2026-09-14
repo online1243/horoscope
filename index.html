@@ -6,67 +6,57 @@
     <title>Open Binance App</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: Arial, sans-serif;
+            background-color: #0b0e11;
+            color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #0b0e11;
-            color: #ffffff;
         }
 
         .card {
             background-color: #1e2329;
-            padding: 30px;
-            border-radius: 16px;
+            padding: 24px;
+            border-radius: 12px;
             text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            max-width: 320px;
-            width: 90%;
+            width: 300px;
         }
 
-        h2 {
-            margin-bottom: 20px;
-            font-size: 20px;
-            color: #f0b90b; /* Binance Yellow */
-        }
-
-        .btn-open {
-            display: inline-block;
+        .btn {
+            display: block;
             width: 100%;
-            padding: 14px 0;
-            background-color: #f0b90b;
+            padding: 12px 0;
+            margin: 10px 0;
+            background-color: #f0b90b; /* Binance Yellow */
             color: #000000;
             font-weight: bold;
-            font-size: 16px;
             text-decoration: none;
-            border-radius: 8px;
-            transition: background-color 0.2s, transform 0.1s;
-            box-sizing: border-box;
-        }
-
-        .btn-open:active {
-            transform: scale(0.98);
-            background-color: #d9a607;
-        }
-
-        p {
-            font-size: 12px;
-            color: #848e9c;
-            margin-top: 15px;
+            border-radius: 6px;
+            font-size: 15px;
         }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <h2>Binance App Access</h2>
-        <!-- Deep Link for Binance App -->
-        <a href="binance://embedded-browser?url=https://google.com/1" class="btn-open">
-            Open App
+        <h3 style="color: #f0b90b;">Open Binance</h3>
+        
+        <!-- Option 1: Official Deep Link Scheme -->
+        <a href="bnc://app.binance.com/webview/webview?url=https://google.com/1" class="btn">
+            Open App (Option 1)
         </a>
-        <p>Agar app installed hai toh directly open ho jayega.</p>
+
+        <!-- Option 2: Webview Direct Scheme -->
+        <a href="binance://app?url=https://google.com/1" class="btn">
+            Open App (Option 2)
+        </a>
+
+        <!-- Option 3: Universal Link -->
+        <a href="https://app.binance.com/en/webview/webview?url=https://google.com/1" class="btn">
+            Open App (Option 3 - Universal Link)
+        </a>
     </div>
 
 </body>
