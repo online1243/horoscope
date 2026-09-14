@@ -1,67 +1,68 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Binance WalletConnect Integration</title>
+    <title>Binance WalletConnect</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
             background-color: #0b0e11;
-            color: #ffffff;
+            color: #fff;
+            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
         }
-
-        .card {
-            background-color: #1e2329;
-            padding: 24px;
-            border-radius: 12px;
+        .box {
+            background: #1e2329;
+            padding: 20px;
+            border-radius: 10px;
             text-align: center;
-            width: 320px;
+            width: 300px;
         }
-
         .btn {
-            display: block;
-            width: 100%;
-            padding: 12px 0;
-            margin: 12px 0;
-            background-color: #f0b90b;
-            color: #000000;
-            font-weight: bold;
-            text-decoration: none;
+            background: #f0b90b;
+            color: #000;
+            padding: 12px;
+            border: none;
             border-radius: 6px;
-            font-size: 15px;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h3 style="color: #f0b90b;">Binance Web3 Connect</h3>
-        
-        <!-- WalletConnect Scheme Button -->
-        <button id="openBinanceBtn" class="btn">Connect via Binance</button>
-    </div>
+<div class="box">
+    <h3 style="color: #f0b90b;">Connect Binance</h3>
+    <button class="btn" onclick="connectBinance()">Open in Binance App</button>
+</div>
 
-    <script>
-        document.getElementById('openBinanceBtn').addEventListener('click', function() {
-            // Step 1: WalletConnect URI (Ye aapke Backend/SDK se generate hota hai)
-            var rawWcUri = "wc:8a7070a235ae6b0d948... (Aapka Full WC URI)";
-            
-            // Step 2: WC URI ko encode karein
-            var encodedWcUri = encodeURIComponent(rawWcUri);
-            
-            // Step 3: Binance Deep Link URL banayein
-            var binanceDeepLink = "bnc://app.binance.com/wc?uri=" + encodedWcUri;
-            
-            // Redirect to Binance
-            window.location.href = binanceDeepLink;
-        });
-    </script>
+<script>
+function connectBinance() {
+    // 1. Aapka dynamic WC URI (Jo WalletConnect Server generate karke deta hai)
+    // Example format: wc:7f6e...@2?symKey=...&relay-protocol=irn
+    let activeWcUri = "YOUR_DYNAMIC_WALLETCONNECT_URI_HERE"; 
+
+    if(!activeWcUri || activeWcUri === "YOUR_DYNAMIC_WALLETCONNECT_URI_HERE") {
+        alert("Pehle WalletConnect SDK se active URI generate karein!");
+        return;
+    }
+
+    // 2. URI Ko Encoded format me convert karein
+    let encodedUri = encodeURIComponent(activeWcUri);
+
+    // 3. Binance App Deep Link
+    let binanceUrl = "bnc://app.binance.com/wc?uri=" + encodedUri;
+
+    // Direct Redirect
+    window.location.href = binanceUrl;
+}
+</script>
 
 </body>
 </html>
