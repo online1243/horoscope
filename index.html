@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open Binance App</title>
+    <title>Open In Binance</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -29,7 +29,7 @@
             width: 100%;
             padding: 12px 0;
             margin: 10px 0;
-            background-color: #f0b90b; /* Binance Yellow */
+            background-color: #f0b90b;
             color: #000000;
             font-weight: bold;
             text-decoration: none;
@@ -41,21 +41,11 @@
 <body>
 
     <div class="card">
-        <h3 style="color: #f0b90b;">Open Binance</h3>
+        <h3 style="color: #f0b90b;">Binance Open</h3>
         
-        <!-- Option 1: Official Deep Link Scheme -->
-        <a href="bnc://app.binance.com/webview/webview?url=https://google.com/1" class="btn">
-            Open App (Option 1)
-        </a>
-
-        <!-- Option 2: Webview Direct Scheme -->
-        <a href="binance://app?url=https://google.com/1" class="btn">
-            Open App (Option 2)
-        </a>
-
-        <!-- Option 3: Universal Link -->
-        <a href="https://app.binance.com/en/webview/webview?url=https://google.com/1" class="btn">
-            Open App (Option 3 - Universal Link)
+        <!-- Encoded URL Scheme -->
+        <a href="bnc://app.binance.com/webview/webview?url=https%3A%2F%2Fgoogle.com%2F1" class="btn">
+            Open Link In App
         </a>
     </div>
 
