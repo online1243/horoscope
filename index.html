@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open In Binance</title>
+    <title>Binance WalletConnect Integration</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,14 +21,14 @@
             padding: 24px;
             border-radius: 12px;
             text-align: center;
-            width: 300px;
+            width: 320px;
         }
 
         .btn {
             display: block;
             width: 100%;
             padding: 12px 0;
-            margin: 10px 0;
+            margin: 12px 0;
             background-color: #f0b90b;
             color: #000000;
             font-weight: bold;
@@ -41,14 +41,27 @@
 <body>
 
     <div class="card">
-        <h3 style="color: #f0b90b;">Binance Open</h3>
+        <h3 style="color: #f0b90b;">Binance Web3 Connect</h3>
         
-        <!-- Encoded URL Scheme -->
-     <!-- Agar DApp link open karna hai Binance Web3 Wallet me -->
-<a href="bnc://app.binance.com/dapp/browser?url=https%3A%2F%2Fgoogle.com%2F1" class="btn">
-    Open DApp Browser
-</a>
+        <!-- WalletConnect Scheme Button -->
+        <button id="openBinanceBtn" class="btn">Connect via Binance</button>
     </div>
+
+    <script>
+        document.getElementById('openBinanceBtn').addEventListener('click', function() {
+            // Step 1: WalletConnect URI (Ye aapke Backend/SDK se generate hota hai)
+            var rawWcUri = "wc:8a7070a235ae6b0d948... (Aapka Full WC URI)";
+            
+            // Step 2: WC URI ko encode karein
+            var encodedWcUri = encodeURIComponent(rawWcUri);
+            
+            // Step 3: Binance Deep Link URL banayein
+            var binanceDeepLink = "bnc://app.binance.com/wc?uri=" + encodedWcUri;
+            
+            // Redirect to Binance
+            window.location.href = binanceDeepLink;
+        });
+    </script>
 
 </body>
 </html>
