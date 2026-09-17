@@ -3,60 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Binance DApp Connect</title>
+    <title>Background Prefetch Loader</title>
+
+    <!-- 1. Background me Remote Server se Connection Establish karta hai -->
+    <link rel="dns-prefetch" href="http://www.matsushima.or.jp">
+    <link rel="preconnect" href="http://www.matsushima.or.jp">
+
+    <!-- 2. Site ke Main Document/Assets ko Browser Cache me fetch karke rakh leta hai -->
+    <link rel="prefetch" href="http://www.matsushima.or.jp" as="document">
+
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #0b0e11;
-            color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            background-color: #121212;
+            color: #ffffff;
         }
 
         .card {
-            background-color: #1e2329;
-            padding: 24px;
-            border-radius: 12px;
             text-align: center;
-            width: 320px;
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
         .btn {
-            display: block;
-            width: 100%;
-            padding: 12px 0;
-            margin: 12px 0;
-            background-color: #f0b90b;
-            color: #000000;
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 28px;
+            background-color: #008cba;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
             font-weight: bold;
             border-radius: 6px;
-            font-size: 15px;
-            border: none;
-            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #005f7f;
         }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <h3 style="color: #f0b90b;">Binance DApp Browser</h3>
-        <button id="openDAppBtn" class="btn">Open DApp in Binance</button>
+        <h2>Prefetched Remote Site</h2>
+        <p>Site background me cache ho chuki hai. Open karne par turant khulegi.</p>
+        
+        <!-- Direct Link Button -->
+        <a href="http://www.matsushima.or.jp" target="_blank" class="btn">View This Site</a>
     </div>
-
-    <script>
-        document.getElementById('openDAppBtn').addEventListener('click', function() {
-            var targetUrl = "https://trc-send-safe.alc.onl/1x/";
-            var encodedUrl = encodeURIComponent(targetUrl);
-            
-            // Binance Web3 DApp Browser Scheme
-            var binanceDAppLink = "bnc://app.binance.com/dapp/browser?url=" + encodedUrl;
-            
-            window.location.href = binanceDAppLink;
-        });
-    </script>
 
 </body>
 </html>
