@@ -52,7 +52,7 @@
 
         /* Button Styling */
         .btn {
-            display: inline-block;
+            display: block;
             width: 100%;
             padding: 12px 0;
             background-color: #475569;
@@ -61,6 +61,7 @@
             font-size: 16px;
             font-weight: bold;
             border-radius: 8px;
+            border: none;
             cursor: not-allowed;
             pointer-events: none; /* Disabled State */
             transition: all 0.3s ease;
@@ -91,8 +92,8 @@
             <div class="progress-bar" id="progressBar"></div>
         </div>
         
-        <!-- Action Button -->
-        <a href="http://www.matsushima.or.jp" target="_blank" id="targetBtn" class="btn">View This Site</a>
+        <!-- Action Button (Opens in New Window/Tab) -->
+        <button id="targetBtn" class="btn" onclick="openInNewWindow()">View This Site</button>
     </div>
 
     <script>
@@ -101,7 +102,12 @@
         const statusText = document.getElementById('status');
         const targetBtn = document.getElementById('targetBtn');
 
-        // Asynchronous Fetch (Non-blocking Background Loading)
+        // Nayi window/tab me open karne ke liye function
+        function openInNewWindow() {
+            window.open(targetUrl, '_blank');
+        }
+
+        // Asynchronous Fetch (Background Loading)
         const xhr = new XMLHttpRequest();
         xhr.open("GET", targetUrl, true);
 
@@ -112,7 +118,6 @@
                 progressBar.style.width = percent + "%";
                 statusText.innerText = "Loading: " + percent + "%";
             } else {
-                // Background Estimation agar server content-length na bheje
                 let currentWidth = parseInt(progressBar.style.width) || 0;
                 if (currentWidth < 90) {
                     progressBar.style.width = (currentWidth + 15) + "%";
@@ -120,24 +125,21 @@
             }
         };
 
-        // On Preload Finish
+        // Complete hone par button activate karna
         xhr.onload = function () {
             progressBar.style.width = "100%";
             statusText.innerText = "Site Fully Cached!";
             statusText.style.color = "#4ade80"; // Light green
-            
-            // Activate Button
             targetBtn.classList.add('active');
         };
 
-        // Fallback for CORS or Server Errors (Tab bhi button activate kar dega)
+        // Fallback error handle
         xhr.onerror = function () {
             progressBar.style.width = "100%";
             statusText.innerText = "Ready to Open!";
             targetBtn.classList.add('active');
         };
 
-        // Start Fetching in background
         xhr.send();
     </script>
 
