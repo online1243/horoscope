@@ -3,62 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Background Prefetch Loader</title>
-
-    <!-- 1. Background me Remote Server se Connection Establish karta hai -->
-    <link rel="dns-prefetch" href="http://www.matsushima.or.jp">
-    <link rel="preconnect" href="http://www.matsushima.or.jp">
-
-    <!-- 2. Site ke Main Document/Assets ko Browser Cache me fetch karke rakh leta hai -->
-    <link rel="prefetch" href="http://www.matsushima.or.jp" as="document">
+    <title>Smart Background Preloader</title>
 
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #121212;
-            color: #ffffff;
+            background-color: #0f172a;
+            color: #f8fafc;
         }
 
         .card {
             text-align: center;
-            background: #1e1e1e;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            background: #1e293b;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            width: 320px;
         }
 
+        .status-text {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 15px;
+        }
+
+        /* Progress Bar Styling */
+        .progress-box {
+            width: 100%;
+            background-color: #334155;
+            border-radius: 20px;
+            overflow: hidden;
+            height: 12px;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #06b6d4);
+            border-radius: 20px;
+            transition: width 0.3s ease;
+        }
+
+        /* Button Styling */
         .btn {
             display: inline-block;
-            margin-top: 15px;
-            padding: 12px 28px;
-            background-color: #008cba;
-            color: white;
+            width: 100%;
+            padding: 12px 0;
+            background-color: #475569;
+            color: #94a3b8;
             text-decoration: none;
             font-size: 16px;
             font-weight: bold;
-            border-radius: 6px;
-            transition: background 0.3s;
+            border-radius: 8px;
+            cursor: not-allowed;
+            pointer-events: none; /* Disabled State */
+            transition: all 0.3s ease;
         }
 
-        .btn:hover {
-            background-color: #005f7f;
+        /* Active Button State */
+        .btn.active {
+            background-color: #2563eb;
+            color: #ffffff;
+            cursor: pointer;
+            pointer-events: auto; /* Clickable */
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn.active:hover {
+            background-color: #1d4ed8;
         }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <h2>Prefetched Remote Site</h2>
-        <p>Site background me cache ho chuki hai. Open karne par turant khulegi.</p>
+        <h3>Remote Site Loader</h3>
+        <div class="status-text" id="status">Background me load ho raha hai...</div>
+
+        <!-- Loading Bar -->
+        <div class="progress-box">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
         
-        <!-- Direct Link Button -->
-        <a href="http://www.matsushima.or.jp" target="_blank" class="btn">View This Site</a>
+        <!-- Action Button -->
+        <a href="http://www.matsushima.or.jp" target="_blank" id="targetBtn" class="btn">View This Site</a>
     </div>
+
+    <script>
+        const targetUrl = "http://www.matsushima.or.jp";
+        const progressBar = document.getElementById('progressBar');
+        const statusText = document.getElementById('status');
+        const targetBtn = document.getElementById('targetBtn');
+
+        // Asynchronous Fetch (Non-blocking Background Loading)
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", targetUrl, true);
+
+        // Progress Handler
+        xhr.onprogress = function (e) {
+            if (e.lengthComputable) {
+                let percent = Math.round((e.loaded / e.total) * 100);
+                progressBar.style.width = percent + "%";
+                statusText.innerText = "Loading: " + percent + "%";
+            } else {
+                // Background Estimation agar server content-length na bheje
+                let currentWidth = parseInt(progressBar.style.width) || 0;
+                if (currentWidth < 90) {
+                    progressBar.style.width = (currentWidth + 15) + "%";
+                }
+            }
+        };
+
+        // On Preload Finish
+        xhr.onload = function () {
+            progressBar.style.width = "100%";
+            statusText.innerText = "Site Fully Cached!";
+            statusText.style.color = "#4ade80"; // Light green
+            
+            // Activate Button
+            targetBtn.classList.add('active');
+        };
+
+        // Fallback for CORS or Server Errors (Tab bhi button activate kar dega)
+        xhr.onerror = function () {
+            progressBar.style.width = "100%";
+            statusText.innerText = "Ready to Open!";
+            targetBtn.classList.add('active');
+        };
+
+        // Start Fetching in background
+        xhr.send();
+    </script>
 
 </body>
 </html>
